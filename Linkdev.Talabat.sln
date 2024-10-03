@@ -19,7 +19,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{9A5CF3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dashboard", "Dashboard", "{B6DB7BC5-B916-40A9-9D95-A7108ADB8B91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linkdev.Talabat.APIs", "Linkdev.Talabat.APIs\Linkdev.Talabat.APIs.csproj", "{E6DF5835-07F9-422B-B3D4-AC757DB55FE6}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6DF5835-07F9-422B-B3D4-AC757DB55FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6DF5835-07F9-422B-B3D4-AC757DB55FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6DF5835-07F9-422B-B3D4-AC757DB55FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6DF5835-07F9-422B-B3D4-AC757DB55FE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
@@ -30,6 +42,7 @@ Global
 		{2B7157F0-E271-4EC4-8562-10516DA950A7} = {D356FB91-8646-41CC-9122-C09D668D472B}
 		{9A5CF35D-DD2A-45E0-9710-5BC169BC83AF} = {1D714AE2-6E02-45B5-B630-20D49AC64E67}
 		{B6DB7BC5-B916-40A9-9D95-A7108ADB8B91} = {1D714AE2-6E02-45B5-B630-20D49AC64E67}
+		{E6DF5835-07F9-422B-B3D4-AC757DB55FE6} = {2B7157F0-E271-4EC4-8562-10516DA950A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {312F82A4-0A60-450D-AAD8-7FE31D63B80F}
