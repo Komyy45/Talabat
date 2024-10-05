@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Linkdev.Talabat.APIs.Extensions;
 using Linkdev.Talabat.Persistence;
 using Linkdev.Talabat.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
@@ -24,42 +25,15 @@ namespace Linkdev.Talabat.APIs
 
             var app = builder.Build();
 
-            #region Applying Pending Migrations & Data Seeding
-            
-            var scope = app.Services.CreateAsyncScope();
+            #region Database Initialization
 
-            var storeContext = scope.ServiceProvider.GetService<StoreContext>();
-
-            var loggerFactory = scope.ServiceProvider.GetService<ILoggerFactory>();
-
-            try
-            {
-                var pendingMigrations = await storeContext!.Database.GetPendingMigrationsAsync();
-
-                if (pendingMigrations.Any())
-                    await storeContext.Database.MigrateAsync();
-
-                await storeContext.SeedAsync();
-
-            }
-            catch (Exception ex)
-            {
-
-                var logger = loggerFactory!.CreateLogger<ILogger<Program>>();
-
-                logger.LogError(ex, "An Error has been Occured!");
-
-            }
-            finally
-            {
-                await scope.DisposeAsync();
-            }
+            await app.InitializeStoreContextAsync();
 
             #endregion
 
             // Configure the HTTP request pipeline.
             #region Configure Kestral Middlewares
-            
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
