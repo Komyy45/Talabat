@@ -24,7 +24,7 @@ namespace Linkdev.Talabat.APIs
 
             var app = builder.Build();
 
-            #region Applying Pending Migrations
+            #region Applying Pending Migrations & Data Seeding
             
             var scope = app.Services.CreateAsyncScope();
 
@@ -34,16 +34,18 @@ namespace Linkdev.Talabat.APIs
 
             try
             {
-                var pendingMigrations = await storeContext.Database.GetPendingMigrationsAsync();
+                var pendingMigrations = await storeContext!.Database.GetPendingMigrationsAsync();
 
                 if (pendingMigrations.Any())
                     await storeContext.Database.MigrateAsync();
+
+                await storeContext.SeedAsync();
 
             }
             catch (Exception ex)
             {
 
-                var logger = loggerFactory.CreateLogger<ILogger<Program>>();
+                var logger = loggerFactory!.CreateLogger<ILogger<Program>>();
 
                 logger.LogError(ex, "An Error has been Occured!");
 
