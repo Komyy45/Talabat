@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Linkdev.Talabat.Core.Domain.Contracts;
+﻿using Linkdev.Talabat.Core.Domain.Contracts;
 using Linkdev.Talabat.Persistence.Data;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Linkdev.Talabat.Persistence.Repositories
 {
