@@ -1,0 +1,1 @@
+﻿global using Linkdev.Talabat.Core.Domain.Common;
