@@ -1,6 +1,6 @@
 ﻿namespace Linkdev.Talabat.Persistence.Data.Config.Products
 {
-    internal class ProductConfigurations : BaseEntityConfigurations<Product, int>
+    internal class ProductConfigurations : BaseAuditableEntityConfigurations<Product, int>
     {
         public override void Configure(EntityTypeBuilder<Product> builder)
         {

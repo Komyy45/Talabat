@@ -1,5 +1,7 @@
 ﻿using Linkdev.Talabat.Core.Domain.Contracts;
 using Linkdev.Talabat.Persistence.Data;
+using Linkdev.Talabat.Persistence.Data.Interceptors;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +17,8 @@ namespace Linkdev.Talabat.Persistence
             ));
 
             services.AddScoped<IStoreContextInitializer, StoreContextInitializer>();
+
+            services.AddScoped(typeof(ISaveChangesInterceptor), typeof(CustomSaveChangesInterceptor));
 
             return services;
         }

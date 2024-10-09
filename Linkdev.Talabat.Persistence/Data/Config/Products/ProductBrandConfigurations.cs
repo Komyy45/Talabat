@@ -2,7 +2,7 @@
 
 namespace Linkdev.Talabat.Persistence.Data.Config.Products
 {
-    internal class ProductBrandConfigurations : BaseEntityConfigurations<ProductBrand, int>
+    internal class ProductBrandConfigurations : BaseAuditableEntityConfigurations<ProductBrand, int>
     {
         public override void Configure(EntityTypeBuilder<ProductBrand> builder)
         {

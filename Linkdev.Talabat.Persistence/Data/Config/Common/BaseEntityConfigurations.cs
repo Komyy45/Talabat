@@ -1,6 +1,4 @@
-﻿
-
-namespace Linkdev.Talabat.Persistence.Data.Config.Common
+﻿namespace Linkdev.Talabat.Persistence.Data.Config.Common
 {
     internal class BaseEntityConfigurations<TEntity, TKey> : IEntityTypeConfiguration<TEntity>
         where TEntity : BaseEntity<TKey>
@@ -9,19 +7,7 @@ namespace Linkdev.Talabat.Persistence.Data.Config.Common
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
             builder.Property(E => E.Id)
-                .ValueGeneratedOnAdd();
-
-            builder.Property(E => E.CreatedBy)
-                .IsRequired();
-
-            builder.Property(E => E.CreatedOn)
-                .IsRequired();
-
-            builder.Property(E => E.LastModifiedBy)
-                .IsRequired();
-
-            builder.Property(E => E.LastModifiedBy)
-                .IsRequired();
+                   .ValueGeneratedOnAdd();
         }
     }
 }
