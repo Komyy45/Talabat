@@ -4,7 +4,7 @@ using Linkdev.Talabat.Core.Application.Abstraction.Models.Products;
 using Linkdev.Talabat.Core.Domain.Contracts;
 using Linkdev.Talabat.Core.Domain.Entities.Products;
 
-namespace Linkdev.Talabat.Core.Application.Services
+namespace Linkdev.Talabat.Core.Application.Services.Products
 {
     internal class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
@@ -14,7 +14,7 @@ namespace Linkdev.Talabat.Core.Application.Services
 
             return mapper.Map<IEnumerable<ProductToReturnDto>>(products);
         }
-        
+
         public async Task<ProductToReturnDto?> GetProduct(int id)
         {
             var product = await unitOfWork.GetRepository<Product, int>().GetAsync(id);
@@ -25,7 +25,7 @@ namespace Linkdev.Talabat.Core.Application.Services
         public async Task<IEnumerable<BrandDto>> GetBrands()
         {
             var brands = await unitOfWork.GetRepository<ProductBrand, int>().GetAllAsync();
-        
+
             return mapper.Map<IEnumerable<BrandDto>>(brands);
         }
 
