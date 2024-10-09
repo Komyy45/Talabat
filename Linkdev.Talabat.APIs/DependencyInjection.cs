@@ -8,7 +8,7 @@ namespace Linkdev.Talabat.APIs
         public static IServiceCollection AddPresentationServices(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            services.AddScoped(typeof(ILoggedInUserService), typeof(LoggedInUserService))
+            services.AddScoped(typeof(ILoggedInUserService), typeof(LoggedInUserService));
 
             return services;
         }

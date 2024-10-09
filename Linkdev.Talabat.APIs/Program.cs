@@ -1,4 +1,5 @@
 using Linkdev.Talabat.APIs.Extensions;
+using Linkdev.Talabat.Core.Application;
 using Linkdev.Talabat.Persistence;
 
 namespace Linkdev.Talabat.APIs
@@ -17,6 +18,7 @@ namespace Linkdev.Talabat.APIs
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPresentationServices();
+            builder.Services.AddApplicationServices();
             builder.Services.AddPersistenceServices(builder.Configuration);
 
             #endregion

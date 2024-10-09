@@ -7,7 +7,7 @@ namespace Linkdev.Talabat.Persistence.Repositories
         where TEntity : BaseEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        public async Task<IEnumerable<TEntity>> GetAllAsync(bool withAsNoTracking)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(bool withAsNoTracking = true)
             => await (withAsNoTracking ? context.Set<TEntity>().AsNoTracking().ToListAsync() :  context.Set<TEntity>().AsNoTracking().ToListAsync());
 
         public async Task<TEntity?> GetAsync(int id)
