@@ -1,4 +1,4 @@
-﻿namespace Linkdev.Talabat.Core.Domain.Contracts
+﻿namespace Linkdev.Talabat.Core.Domain.Contracts.Persistence
 {
     public interface IStoreContextInitializer
     {
