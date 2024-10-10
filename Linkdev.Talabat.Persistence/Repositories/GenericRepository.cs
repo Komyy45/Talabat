@@ -1,6 +1,6 @@
 ﻿using Linkdev.Talabat.Core.Domain.Contracts;
+using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Persistence.Data;
-using Microsoft.Extensions.Logging;
 
 namespace Linkdev.Talabat.Persistence.Repositories
 {
@@ -17,10 +17,29 @@ namespace Linkdev.Talabat.Persistence.Repositories
            
             return await (withAsNoTracking ? context.Set<TEntity>().AsNoTracking().ToListAsync() : context.Set<TEntity>().ToListAsync());
         }
-           
 
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> spec, bool withAsNoTracking = true)
+        {
+            var query = ApplySpecifications(context.Set<TEntity>(), spec);
+
+            if (withAsNoTracking)
+                query = query.AsNoTracking();
+
+            return await query.ToListAsync();
+        }
+          
         public async Task<TEntity?> GetAsync(int id)
-            => await context.Set<TEntity>().FindAsync(id);
+        {
+            if(typeof(TEntity) == typeof(Product))
+                return await context.Set<Product>().Include(p => p.Brand).Include(p => p.Category).AsNoTracking().FirstOrDefaultAsync() as TEntity;
+
+            return await context.Set<TEntity>().FindAsync(id);
+        }
+
+        public async Task<TEntity?> GetAsync(ISpecifications<TEntity, TKey> spec, int id)
+        {
+            return await ApplySpecifications(context.Set<TEntity>(), spec).FirstOrDefaultAsync();
+        }
 
         public async Task AddAsync(TEntity entity)
             => await context.Set<TEntity>().AddAsync(entity);
@@ -30,5 +49,14 @@ namespace Linkdev.Talabat.Persistence.Repositories
 
         public void Delete(TEntity entity)
             => context.Set<TEntity>().Remove(entity);
+
+        #region Helpers
+
+        private IQueryable<TEntity> ApplySpecifications(IQueryable<TEntity> query, ISpecifications<TEntity, TKey> spec)
+        {
+            return SpecificationEvaluator.GetQuery(query, spec);
+        }
+
+        #endregion
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using Linkdev.Talabat.Core.Domain.Contracts;
+using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Persistence.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 

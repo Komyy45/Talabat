@@ -2,7 +2,7 @@
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Products;
 using Linkdev.Talabat.Core.Application.Services.Products;
-using Linkdev.Talabat.Core.Domain.Contracts;
+using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 
 namespace Linkdev.Talabat.Core.Application.Services
 {

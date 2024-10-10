@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Linkdev.Talabat.Core.Domain.Contracts;
+using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 
 namespace Linkdev.Talabat.Persistence.Data
 {
