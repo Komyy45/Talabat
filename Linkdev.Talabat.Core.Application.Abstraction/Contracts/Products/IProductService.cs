@@ -13,8 +13,8 @@ namespace Linkdev.Talabat.Core.Application.Abstraction.Contracts.Products
 
         Task<ProductToReturnDto?> GetProduct(int id);
 
-        Task<IEnumerable<BrandDto>> GetBrands();
+        Task<IEnumerable<BrandDto>> GetBrandsAsync();
 
-        Task<IEnumerable<CategoryDto>> GetCategories();
+        Task<IEnumerable<CategoryDto>> GetCategoriesAsync();
     }
 }

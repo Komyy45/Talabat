@@ -24,5 +24,14 @@ namespace Linkdev.Talabat.APIs.Controllers.Controllers.Products
 
             return NotFound();
         }
+
+        [HttpGet("Brands")] // BaseUrl/api/Products/Brands
+        public async Task<ActionResult<BrandDto>> GetBrands()
+            => Ok(await serviceManager.ProductService.GetBrandsAsync());
+
+
+        [HttpGet("Categories")] // BaseUrl/api/Products/Categories
+        public async Task<ActionResult<CategoryDto>> GetCategories()
+            => Ok(await serviceManager.ProductService.GetCategoriesAsync());
     }
 }

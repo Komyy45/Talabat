@@ -43,6 +43,8 @@ namespace Linkdev.Talabat.APIs
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();   
+
             app.UseAuthorization();
 
 

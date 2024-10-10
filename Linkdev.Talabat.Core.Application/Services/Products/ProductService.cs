@@ -28,14 +28,14 @@ namespace Linkdev.Talabat.Core.Application.Services.Products
             return mapper.Map<ProductToReturnDto>(product);
         }
 
-        public async Task<IEnumerable<BrandDto>> GetBrands()
+        public async Task<IEnumerable<BrandDto>> GetBrandsAsync()
         {
             var brands = await unitOfWork.GetRepository<ProductBrand, int>().GetAllAsync();
 
             return mapper.Map<IEnumerable<BrandDto>>(brands);
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetCategories()
+        public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
         {
             var categories = await unitOfWork.GetRepository<ProductCategory, int>().GetAllAsync();
 
