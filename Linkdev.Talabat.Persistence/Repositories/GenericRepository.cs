@@ -1,5 +1,6 @@
 ﻿using Linkdev.Talabat.Core.Domain.Contracts;
 using Linkdev.Talabat.Persistence.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Linkdev.Talabat.Persistence.Repositories
 {
@@ -8,7 +9,15 @@ namespace Linkdev.Talabat.Persistence.Repositories
         where TKey : IEquatable<TKey>
     {
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool withAsNoTracking = true)
-            => await (withAsNoTracking ? context.Set<TEntity>().AsNoTracking().ToListAsync() :  context.Set<TEntity>().AsNoTracking().ToListAsync());
+        {
+
+            if (typeof(TEntity) == typeof(Product))
+                return (IEnumerable<TEntity>) await (withAsNoTracking ? context.Set<Product>().Include(p => p.Brand).Include(p => p.Category).AsNoTracking().ToListAsync() 
+                    : context.Set<Product>().Include(p => p.Brand).Include(p => p.Category).ToListAsync());
+           
+            return await (withAsNoTracking ? context.Set<TEntity>().AsNoTracking().ToListAsync() : context.Set<TEntity>().ToListAsync());
+        }
+           
 
         public async Task<TEntity?> GetAsync(int id)
             => await context.Set<TEntity>().FindAsync(id);
