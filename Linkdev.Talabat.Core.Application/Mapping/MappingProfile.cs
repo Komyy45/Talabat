@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,8 @@ namespace Linkdev.Talabat.Core.Application.Mapping
 
                 CreateMap<Product, ProductToReturnDto>()
                 .ForMember(D => D.Brand, memberOptions => memberOptions.MapFrom(src => src.Brand!.Name))
-                .ForMember(D => D.Category, memberOptions => memberOptions.MapFrom(src => src.Category!.Name));
+                .ForMember(D => D.Category, memberOptions => memberOptions.MapFrom(src => src.Category!.Name))
+                .ForMember(D => D.PictureUrl, memberOptions => memberOptions.MapFrom<ProductPictureUrlResolver>());
                 
                 CreateMap<ProductBrand, BrandDto>();
                 

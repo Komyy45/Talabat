@@ -3,7 +3,7 @@
 namespace Linkdev.Talabat.APIs.Controllers.Controllers.Base
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class BaseApiController : ControllerBase
     {
     }
