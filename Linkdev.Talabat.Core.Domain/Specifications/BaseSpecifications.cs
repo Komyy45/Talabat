@@ -9,8 +9,11 @@ namespace Linkdev.Talabat.Core.Domain.Specifications
     {
         public Expression<Func<TEntity, bool>> Criteria { get; set; } = null!;
         public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new();
-        public Expression<Func<TEntity, object>> OrderBy { get; set; }
-        public Expression<Func<TEntity, object>> OrderByDesc { get; set; }
+        public Expression<Func<TEntity, object>> OrderBy { get; set; } = null!;
+        public Expression<Func<TEntity, object>> OrderByDesc { get; set; } = null!;
+        public int Take { get; set; }
+        public int Skip { get; set; }
+        public bool IsPaginationEnabled { get; set; }
 
         public BaseSpecifications()
         {
@@ -33,6 +36,13 @@ namespace Linkdev.Talabat.Core.Domain.Specifications
         protected virtual void AddOrderByDesc(Expression<Func<TEntity, object>> orderByDesc)
         {
             OrderByDesc = orderByDesc;
+        }
+
+        protected virtual void ApplyPagination(int skip, int take)
+        {
+            IsPaginationEnabled = true;
+            Take = take;
+            Skip = skip;
         }
     }
 }

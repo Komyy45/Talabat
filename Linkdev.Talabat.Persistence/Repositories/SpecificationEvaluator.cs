@@ -16,6 +16,9 @@ namespace Linkdev.Talabat.Persistence.Repositories
             else if (specs.OrderBy is not null)
                 query = query.OrderBy(specs.OrderBy);
 
+            if (specs.IsPaginationEnabled)
+                query = query.Skip(specs.Skip).Take(specs.Take);
+
             query = specs.Includes.Aggregate(query, (prev, currentVal) => prev.Include(currentVal));
 
             return query;
