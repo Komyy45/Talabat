@@ -8,16 +8,16 @@ namespace Linkdev.Talabat.APIs.Controllers.Controllers.Products
     public class ProductsController(IServiceManager serviceManager) : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts(string? sort)
         {
-            var products = await serviceManager.ProductService.GetAllProducts();
+            var products = await serviceManager.ProductService.GetAllProductsAsync(sort);
             return Ok(products);
         }
 
         [HttpGet("{id:int}")] // GET : BaseUrl/api/Products/id
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
-            var product = await serviceManager.ProductService.GetProduct(id);
+            var product = await serviceManager.ProductService.GetProductAsync(id);
 
             if (product is { })
                 return Ok(product);
