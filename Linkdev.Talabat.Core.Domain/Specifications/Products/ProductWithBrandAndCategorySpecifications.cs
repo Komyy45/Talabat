@@ -4,12 +4,13 @@ namespace Linkdev.Talabat.Core.Domain.Specifications.Products
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandAndCategorySpecifications(string? sort) : base()
+        public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId) : base()
         {
+
+            Criteria = P => (!brandId.HasValue || brandId == P.BrandId) && (!categoryId.HasValue || categoryId == P.CategoryId); 
+           
             AddIncludes();
 
-            if (!string.IsNullOrEmpty(sort))
-            {
                 switch(sort)
                 {
                     case "nameDesc":
@@ -26,8 +27,6 @@ namespace Linkdev.Talabat.Core.Domain.Specifications.Products
                         break;
                 }
 
-            }
-            else AddOrderBy(P => P.Name);
         }
 
         public ProductWithBrandAndCategorySpecifications(int id) : base(id)
