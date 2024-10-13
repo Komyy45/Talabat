@@ -1,4 +1,5 @@
-﻿using Linkdev.Talabat.Core.Domain.Contracts;
+﻿using System.Linq.Expressions;
+using Linkdev.Talabat.Core.Domain.Contracts;
 using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Persistence.Data;
 
@@ -43,6 +44,11 @@ namespace Linkdev.Talabat.Persistence.Repositories
 
         public async Task AddAsync(TEntity entity)
             => await context.Set<TEntity>().AddAsync(entity);
+
+        public async Task<int> GetCountAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await ApplySpecifications(context.Set<TEntity>(), spec).CountAsync();
+        }
 
         public void Update(TEntity entity)
             => context.Set<TEntity>().Update(entity);   

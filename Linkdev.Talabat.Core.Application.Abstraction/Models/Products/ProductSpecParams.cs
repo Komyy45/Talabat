@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Linkdev.Talabat.Core.Application.Abstraction.Models.Products
+﻿namespace Linkdev.Talabat.Core.Application.Abstraction.Models.Products
 {
     public class ProductSpecParams
     {
@@ -13,6 +7,10 @@ namespace Linkdev.Talabat.Core.Application.Abstraction.Models.Products
         public int? BrandId { get; set; }
 
         public int? CategoryId { get; set; }
+
+        private string? search;
+
+        public string? Search { get => search; set => search = value?.ToUpper(); }
 
         private int pageSize = 5;
 

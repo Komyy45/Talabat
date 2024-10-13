@@ -9,13 +9,18 @@ namespace Linkdev.Talabat.Core.Application.Services.Products
 {
     internal class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductToReturnDto>> GetAllProductsAsync(ProductSpecParams productSpecs)
+        public async Task<Pagination<ProductToReturnDto>> GetAllProductsAsync(ProductSpecParams productSpecs)
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(productSpecs.Sort, productSpecs.BrandId, productSpecs.CategoryId, productSpecs.PageSize, productSpecs.PageIndex);
+            var spec = new ProductWithBrandAndCategorySpecifications(productSpecs.Sort, productSpecs.BrandId, productSpecs.CategoryId, productSpecs.PageSize, productSpecs.PageIndex, productSpecs.Search);
 
             var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(spec);
 
-            return mapper.Map<IEnumerable<ProductToReturnDto>>(products);
+            var mappedProducts = mapper.Map<IEnumerable<ProductToReturnDto>>(products);
+
+            var countSpecifications = new ProductWithFilterationForCountSpecifications(productSpecs.BrandId, productSpecs.CategoryId, productSpecs.Search);
+            var count = await unitOfWork.GetRepository<Product, int>().GetCountAsync(countSpecifications);
+
+            return new Pagination<ProductToReturnDto>() { PageIndex = productSpecs.PageIndex, PageSize = productSpecs.PageSize, Count = count, Data = mappedProducts };
         }
 
         public async Task<ProductToReturnDto?> GetProductAsync(int id)
