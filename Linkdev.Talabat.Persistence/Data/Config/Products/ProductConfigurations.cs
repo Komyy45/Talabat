@@ -10,6 +10,13 @@
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder.Property(P => P.NormalizedName)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.HasIndex(P => P.NormalizedName)
+                   .HasDatabaseName("IX_Articles_NormailzedName");
+
             builder.Property(P => P.Description)
                 .IsRequired();
 

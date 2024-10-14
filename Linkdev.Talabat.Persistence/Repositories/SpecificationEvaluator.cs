@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Linkdev.Talabat.Core.Domain.Contracts;
+﻿using Linkdev.Talabat.Core.Domain.Contracts;
 
 namespace Linkdev.Talabat.Persistence.Repositories
 {
@@ -15,6 +10,14 @@ namespace Linkdev.Talabat.Persistence.Repositories
         {
             if (specs.Criteria is not null)
                 query = query.Where(specs.Criteria);
+
+            if (specs.OrderByDesc is not null)
+                query = query.OrderByDescending(specs.OrderByDesc);
+            else if (specs.OrderBy is not null)
+                query = query.OrderBy(specs.OrderBy);
+
+            if (specs.IsPaginationEnabled)
+                query = query.Skip(specs.Skip).Take(specs.Take);
 
             query = specs.Includes.Aggregate(query, (prev, currentVal) => prev.Include(currentVal));
 

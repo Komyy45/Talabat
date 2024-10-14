@@ -1,4 +1,6 @@
-﻿namespace Linkdev.Talabat.Core.Domain.Contracts.Persistence
+﻿using System.Linq.Expressions;
+
+namespace Linkdev.Talabat.Core.Domain.Contracts.Persistence
 {
     public interface IGenericRepository<TEntity, TKey>
         where TEntity : BaseEntity<TKey>
@@ -9,6 +11,8 @@
 
         Task<TEntity?> GetAsync(int id);
         Task<TEntity?> GetAsync(ISpecifications<TEntity,TKey> spec, int id);
+
+        Task<int> GetCountAsync(ISpecifications<TEntity, TKey> spec);
 
         Task AddAsync(TEntity entity);
 

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Linkdev.Talabat.Core.Application.Abstraction.Models.Products;
+﻿using Linkdev.Talabat.Core.Application.Abstraction.Models.Products;
 
 namespace Linkdev.Talabat.Core.Application.Abstraction.Contracts.Products
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductToReturnDto>> GetAllProducts();
+        Task<Pagination<ProductToReturnDto>> GetAllProductsAsync(ProductSpecParams productSpecs);
 
-        Task<ProductToReturnDto?> GetProduct(int id);
+        Task<ProductToReturnDto?> GetProductAsync(int id);
 
         Task<IEnumerable<BrandDto>> GetBrandsAsync();
 
