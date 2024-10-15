@@ -1,7 +1,9 @@
 using Linkdev.Talabat.APIs.Controllers.Errors;
 using Linkdev.Talabat.APIs.Extensions;
+using Linkdev.Talabat.APIs.Middlewares;
 using Linkdev.Talabat.Core.Application;
 using Linkdev.Talabat.Persistence;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Linkdev.Talabat.APIs
@@ -51,6 +53,8 @@ namespace Linkdev.Talabat.APIs
 
             // Configure the HTTP request pipeline.
             #region Configure Kestral Middlewares
+
+            app.UseMiddleware<CustomExceptionHandlingMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {

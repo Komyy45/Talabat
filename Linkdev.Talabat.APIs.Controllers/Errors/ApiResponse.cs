@@ -1,4 +1,6 @@
-﻿namespace Linkdev.Talabat.APIs.Controllers.Errors
+﻿using System.Text.Json;
+
+namespace Linkdev.Talabat.APIs.Controllers.Errors
 {
     public class ApiResponse
     {
@@ -21,5 +23,8 @@
             500 => "Errors are path to the dark side. Errors lead to anger. Anger lead to hate. Hate lead to carrer change",
             _ => null
         };
+
+        public override string ToString() => JsonSerializer.Serialize(this, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
     }
 }
