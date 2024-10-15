@@ -45,6 +45,7 @@ namespace Linkdev.Talabat.APIs
 
             app.UseStaticFiles();   
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
