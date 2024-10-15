@@ -28,6 +28,16 @@ namespace Linkdev.Talabat.APIs.Controllers.Controllers.Buggy
         [HttpGet("ValidationError/{id}")] // GET : "/api/Buggy/ValidationError/{id}"
         public IActionResult GetValidationError(int id)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(new ApiValidationErrorResponse(400)
+                {
+                    Errors = ModelState.Where(state => state.Value?.Errors.Count > 0)
+                                        .Select(state => new { state.Key, Errors = state.Value.Errors.Select(error => error.ErrorMessage) })
+                                        .ToDictionary(error => error.Key, error => error.Errors)
+                });
+            }
+
             return Ok();
         }
 

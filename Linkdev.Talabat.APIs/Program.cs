@@ -1,6 +1,8 @@
+using Linkdev.Talabat.APIs.Controllers.Errors;
 using Linkdev.Talabat.APIs.Extensions;
 using Linkdev.Talabat.Core.Application;
 using Linkdev.Talabat.Persistence;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Linkdev.Talabat.APIs
 {
@@ -13,7 +15,22 @@ namespace Linkdev.Talabat.APIs
             // Add services to the container.
             #region Configure Services
             
-            builder.Services.AddControllersWithViews().AddApplicationPart(typeof(Linkdev.Talabat.APIs.Controllers.AssemblyInformation).Assembly);
+            builder.Services
+                .AddControllers()
+                .ConfigureApiBehaviorOptions(options => 
+                { 
+                    options.SuppressModelStateInvalidFilter = false;
+                    options.InvalidModelStateResponseFactory = (actionContext) =>
+                    {
+                        return new BadRequestObjectResult(new ApiValidationErrorResponse(400)
+                        {
+                            Errors = actionContext.ModelState.Where(state => state.Value?.Errors.Count > 0)
+                                                                .Select(state => new { state.Key, Errors = state.Value.Errors.Select(error => error.ErrorMessage) })
+                                                                .ToDictionary(error => error.Key, error => error.Errors)
+                        });
+                    };
+                })
+                .AddApplicationPart(typeof(Linkdev.Talabat.APIs.Controllers.AssemblyInformation).Assembly);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

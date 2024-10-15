@@ -1,6 +1,6 @@
 ﻿namespace Linkdev.Talabat.APIs.Controllers.Errors
 {
-    internal class ApiResponse
+    public class ApiResponse
     {
         public int StatusCode { get; set; }
 
