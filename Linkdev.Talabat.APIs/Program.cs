@@ -2,8 +2,8 @@ using Linkdev.Talabat.APIs.Controllers.Errors;
 using Linkdev.Talabat.APIs.Extensions;
 using Linkdev.Talabat.APIs.Middlewares;
 using Linkdev.Talabat.Core.Application;
+using Linkdev.Talabat.Infrastructure;
 using Linkdev.Talabat.Persistence;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Linkdev.Talabat.APIs
@@ -32,12 +32,13 @@ namespace Linkdev.Talabat.APIs
                         });
                     };
                 })
-                .AddApplicationPart(typeof(Linkdev.Talabat.APIs.Controllers.AssemblyInformation).Assembly);
+                .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddPresentationServices();
             builder.Services.AddApplicationServices();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddPersistenceServices(builder.Configuration);
 
 
