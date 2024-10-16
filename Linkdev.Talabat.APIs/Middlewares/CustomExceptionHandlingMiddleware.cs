@@ -1,6 +1,7 @@
 ﻿using System.Net;
+using Azure;
 using Linkdev.Talabat.APIs.Controllers.Errors;
-using Linkdev.Talabat.APIs.Exceptions;
+using Linkdev.Talabat.Core.Application.Exceptions;
 
 namespace Linkdev.Talabat.APIs.Middlewares
 {
@@ -35,42 +36,55 @@ namespace Linkdev.Talabat.APIs.Middlewares
             }
             catch (Exception ex)
             {
-                ApiResponse response;
+                #region Logging
 
-                switch(ex)
+                if (_enviroment.IsDevelopment())
                 {
-                    case NotFoundException:
-                        httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                        response = new ApiResponse(404, ex.Message);
-                        httpContext.Response.ContentType = "Application/json";
-                        await httpContext.Response.WriteAsync(response.ToString());
-                        break;
-
-                    default:
-
-                        // Development mode
-                        if (_enviroment.IsDevelopment())
-                        {
-                            _logger.LogError(ex.Message, ex);
-                            response = new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString());
-                        }
-                        else
-                        {
-                            // Production mode
-                            // logError =-=-> Database / External file
-
-                            response = new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
-                        }
-
-                        httpContext.Response.ContentType = "Application/json";
-                        await httpContext.Response.WriteAsync(response.ToString());
-
-
-                        break;
+                    // Development mode
+                    _logger.LogError(ex.Message, ex);
+                }
+                else
+                {
+                    // Production mode
+                    // logError =-=-> Database / External file (text/json)
                 }
 
+                #endregion
 
+                await HandleExceptionAsync(httpContext, ex);
+            }
+        }
 
+        private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
+        {
+            ApiResponse response;
+
+            switch (ex)
+            {
+                case NotFoundException:
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    response = new ApiResponse(404, ex.Message);
+                    httpContext.Response.ContentType = "Application/json";
+                    await httpContext.Response.WriteAsync(response.ToString());
+                    break;
+
+                case BadRequestException:
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response = new ApiResponse(400, ex.Message);
+                    httpContext.Response.ContentType = "Application/json";
+                    await httpContext.Response.WriteAsync(response.ToString());
+                    break;
+                default:
+
+                    // Development mode
+                    response = _enviroment.IsDevelopment() ?
+                        new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString()) :
+                        new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
+                    
+                    httpContext.Response.ContentType = "Application/json";
+                    await httpContext.Response.WriteAsync(response.ToString());
+
+                    break;
             }
         }
     }
