@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linkdev.Talabat.Dashboard",
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Linkdev.Talabat.Client", "Linkdev.Talabat.Client\Linkdev.Talabat.Client.esproj", "{7563B367-34D8-4FEC-826C-33DB96AF5F5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linkdev.Talabat.APIs.Controllers", "Linkdev.Talabat.APIs.Controllers\Linkdev.Talabat.APIs.Controllers.csproj", "{33A35286-5737-4791-BDE0-66FC828171DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linkdev.Talabat.APIs.Controllers", "Linkdev.Talabat.APIs.Controllers\Linkdev.Talabat.APIs.Controllers.csproj", "{33A35286-5737-4791-BDE0-66FC828171DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
