@@ -36,7 +36,7 @@ namespace Linkdev.Talabat.Core.Application.Services.Basket
         {
             var deleted = await basketRepository.DeleteAsync(id);
 
-            if (deleted) throw new BadRequestException("A problem has been Occured while deleting your cart");
+            if (!deleted) throw new BadRequestException("A problem has been Occured while deleting your cart");
         }
 
     }
