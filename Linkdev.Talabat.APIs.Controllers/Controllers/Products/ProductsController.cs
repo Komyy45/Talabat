@@ -1,4 +1,5 @@
 ﻿using Linkdev.Talabat.APIs.Controllers.Controllers.Base;
+using Linkdev.Talabat.APIs.Controllers.Errors;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Products;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace Linkdev.Talabat.APIs.Controllers.Controllers.Products
             if (product is { })
                 return Ok(product);
 
-            return NotFound();
+            return NotFound(new ApiResponse(404, $"The Product with Id:{id} is not found!"));
         }
 
         [HttpGet("Brands")] // BaseUrl/api/Products/Brands
