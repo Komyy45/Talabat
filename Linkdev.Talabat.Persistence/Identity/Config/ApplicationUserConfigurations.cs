@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Linkdev.Talabat.Core.Domain.Entities.Identity;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Linkdev.Talabat.Persistence.Identity.Config
 {
+    [DbContext(typeof(StoreIdentityDbContext))]
     internal class ApplicationUserConfigurations : IEntityTypeConfiguration<ApplicationUser>
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)

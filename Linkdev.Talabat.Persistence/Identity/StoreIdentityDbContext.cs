@@ -1,6 +1,7 @@
-﻿using Linkdev.Talabat.Core.Domain.Entities.Identity;
-using Linkdev.Talabat.Persistence.Identity.Config;
+﻿using Castle.Core.Internal;
+using Linkdev.Talabat.Core.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Linkdev.Talabat.Persistence.Identity
 {
@@ -15,8 +16,7 @@ namespace Linkdev.Talabat.Persistence.Identity
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration(new ApplicationUserConfigurations());
-            builder.ApplyConfiguration(new AddressConfigurations());
+            builder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly);
         }
     }
 }

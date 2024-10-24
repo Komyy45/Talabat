@@ -1,4 +1,4 @@
-﻿using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
+﻿using Linkdev.Talabat.Core.Domain.Contracts.Persistence.Intializers;
 using Linkdev.Talabat.Persistence.Data;
 using Linkdev.Talabat.Persistence.Data.Interceptors;
 using Linkdev.Talabat.Persistence.Identity;
@@ -26,7 +26,8 @@ namespace Linkdev.Talabat.Persistence
             migrationOptions => migrationOptions.MigrationsAssembly(typeof(AssemblyInformation).Assembly.FullName)
             ));
 
-            services.AddScoped<IStoreContextInitializer, StoreDbContextInitializer>();
+            services.AddScoped<IStoreIdentityDbContextIntializer, StoreIdentityDbContextIntializer>();
+            services.AddScoped<IStoreDbContextInitializer, StoreDbContextInitializer>();
 
             services.AddScoped(typeof(ISaveChangesInterceptor), typeof(CustomSaveChangesInterceptor));
 

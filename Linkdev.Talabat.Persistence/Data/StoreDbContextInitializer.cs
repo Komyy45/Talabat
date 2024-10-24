@@ -1,26 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
+﻿using System.Text.Json;
+using Linkdev.Talabat.Core.Domain.Contracts.Persistence.Intializers;
+using Linkdev.Talabat.Persistence._Common;
 
 namespace Linkdev.Talabat.Persistence.Data
 {
-    public class StoreDbContextInitializer(StoreDbContext storeContext) : IStoreContextInitializer
+    public class StoreDbContextInitializer(StoreDbContext dbContext) : DbIntializer(dbContext), IStoreDbContextInitializer
     {
-        public async Task InitalizeAsync()
+        public override async Task SeedAsync()
         {
-            var pendingMigrations = await storeContext.Database.GetPendingMigrationsAsync();
-
-            if (pendingMigrations.Any())
-                await storeContext.Database.MigrateAsync();
-        }
-
-        public async Task SeedAsync()
-        {
-            if (!storeContext.Brands.Any())
+            if (!dbContext.Brands.Any())
             {
 
                 var data = File.ReadAllText("../Linkdev.Talabat.Persistence/Data/Seeds/brands.json");
@@ -28,12 +16,12 @@ namespace Linkdev.Talabat.Persistence.Data
 
                 if (brands?.Count > 0)
                 {
-                    await storeContext.AddRangeAsync(brands);
-                    await storeContext.SaveChangesAsync();
+                    await dbContext.AddRangeAsync(brands);
+                    await dbContext.SaveChangesAsync();
                 }
             }
 
-            if (!storeContext.Categories.Any())
+            if (!dbContext.Categories.Any())
             {
 
                 var data = File.ReadAllText("../Linkdev.Talabat.Persistence/Data/Seeds/categories.json");
@@ -41,12 +29,12 @@ namespace Linkdev.Talabat.Persistence.Data
 
                 if (categories?.Count > 0)
                 {
-                    await storeContext.AddRangeAsync(categories);
-                    await storeContext.SaveChangesAsync();
+                    await dbContext.AddRangeAsync(categories);
+                    await dbContext.SaveChangesAsync();
                 }
             }
 
-            if (!storeContext.Products.Any())
+            if (!dbContext.Products.Any())
             {
 
                 var data = File.ReadAllText("../Linkdev.Talabat.Persistence/Data/Seeds/products.json");
@@ -54,8 +42,8 @@ namespace Linkdev.Talabat.Persistence.Data
 
                 if (Products?.Count > 0)
                 {
-                    await storeContext.AddRangeAsync(Products);
-                    await storeContext.SaveChangesAsync();
+                    await dbContext.AddRangeAsync(Products);
+                    await dbContext.SaveChangesAsync();
                 }
             }
         }

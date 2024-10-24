@@ -1,5 +1,5 @@
-﻿
-using Linkdev.Talabat.Persistence.Data.Config.Products;
+﻿using Castle.Core.Internal;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Linkdev.Talabat.Persistence.Data
 {
@@ -10,11 +10,9 @@ namespace Linkdev.Talabat.Persistence.Data
             
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.ApplyConfiguration(new ProductConfigurations());
-            modelBuilder.ApplyConfiguration(new ProductBrandConfigurations());
-            modelBuilder.ApplyConfiguration(new ProductCategoryConfigurations());
+            builder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly);
         }
 
         public DbSet<Product> Products { get; set; }
