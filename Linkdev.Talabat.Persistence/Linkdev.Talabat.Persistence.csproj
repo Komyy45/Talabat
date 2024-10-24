@@ -9,6 +9,9 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Seeds\" />
+    <Folder Include="Identity\Interceptors\" />
+    <Folder Include="Identity\Migrations\" />
+    <Folder Include="Identity\Seeds\" />
   </ItemGroup>
 
   <ItemGroup>

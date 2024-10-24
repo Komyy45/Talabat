@@ -7,10 +7,10 @@ namespace Linkdev.Talabat.Persistence.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly StoreContext _dbContext;
+        private readonly StoreDbContext _dbContext;
         private readonly ConcurrentDictionary<string, object> _repsoitories;
 
-        public UnitOfWork(StoreContext dbContext)
+        public UnitOfWork(StoreDbContext dbContext)
         {
             _dbContext = dbContext;
             _repsoitories = new();
