@@ -20,7 +20,8 @@ namespace Linkdev.Talabat.Persistence.Repositories
             where TEntity : BaseEntity<TKey>
             where TKey : IEquatable<TKey>
         {
-            return (IGenericRepository<TEntity,TKey>) _repsoitories.GetOrAdd(nameof(TEntity), new GenericRepository<TEntity,TKey>(_dbContext));
+            var typeName = typeof(TEntity).Name;
+            return (IGenericRepository<TEntity,TKey>) _repsoitories.GetOrAdd(typeName, new GenericRepository<TEntity,TKey>(_dbContext));
         }
 
         public async Task<int> CompleteAsync() => await _dbContext.SaveChangesAsync();

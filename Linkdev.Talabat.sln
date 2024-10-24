@@ -31,11 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linkdev.Talabat.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linkdev.Talabat.Persistence", "Linkdev.Talabat.Persistence\Linkdev.Talabat.Persistence.csproj", "{FB245D2D-AD08-478C-9150-ECBE094A71CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linkdev.Talabat.Dashboard", "Linkdev.Talabat.Dashboard\Linkdev.Talabat.Dashboard.csproj", "{D9042D4D-E9CE-4BEB-B485-DD2822F16CC8}"
-EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Linkdev.Talabat.Client", "Linkdev.Talabat.Client\Linkdev.Talabat.Client.esproj", "{7563B367-34D8-4FEC-826C-33DB96AF5F5A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linkdev.Talabat.APIs.Controllers", "Linkdev.Talabat.APIs.Controllers\Linkdev.Talabat.APIs.Controllers.csproj", "{33A35286-5737-4791-BDE0-66FC828171DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linkdev.Talabat.Dashboard", "Linkdev.Talabat.Dashboard\Linkdev.Talabat.Dashboard.csproj", "{4AADF49B-9A0F-459E-8012-1EE25143AF05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +67,6 @@ Global
 		{FB245D2D-AD08-478C-9150-ECBE094A71CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB245D2D-AD08-478C-9150-ECBE094A71CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB245D2D-AD08-478C-9150-ECBE094A71CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9042D4D-E9CE-4BEB-B485-DD2822F16CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9042D4D-E9CE-4BEB-B485-DD2822F16CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9042D4D-E9CE-4BEB-B485-DD2822F16CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9042D4D-E9CE-4BEB-B485-DD2822F16CC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7563B367-34D8-4FEC-826C-33DB96AF5F5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7563B367-34D8-4FEC-826C-33DB96AF5F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7563B367-34D8-4FEC-826C-33DB96AF5F5A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -81,6 +77,10 @@ Global
 		{33A35286-5737-4791-BDE0-66FC828171DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33A35286-5737-4791-BDE0-66FC828171DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33A35286-5737-4791-BDE0-66FC828171DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AADF49B-9A0F-459E-8012-1EE25143AF05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AADF49B-9A0F-459E-8012-1EE25143AF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AADF49B-9A0F-459E-8012-1EE25143AF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AADF49B-9A0F-459E-8012-1EE25143AF05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,9 +98,9 @@ Global
 		{23A3C1BE-DFC9-40A9-AA61-1FEE25896D84} = {194C09F0-2DF1-484D-B1B6-3794BB459498}
 		{3899C19D-1F1A-4127-9F1F-F524529941CD} = {9424FB36-7862-49CD-8EF3-668746F0808A}
 		{FB245D2D-AD08-478C-9150-ECBE094A71CC} = {9424FB36-7862-49CD-8EF3-668746F0808A}
-		{D9042D4D-E9CE-4BEB-B485-DD2822F16CC8} = {B6DB7BC5-B916-40A9-9D95-A7108ADB8B91}
 		{7563B367-34D8-4FEC-826C-33DB96AF5F5A} = {9A5CF35D-DD2A-45E0-9710-5BC169BC83AF}
 		{33A35286-5737-4791-BDE0-66FC828171DE} = {2B7157F0-E271-4EC4-8562-10516DA950A7}
+		{4AADF49B-9A0F-459E-8012-1EE25143AF05} = {B6DB7BC5-B916-40A9-9D95-A7108ADB8B91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {312F82A4-0A60-450D-AAD8-7FE31D63B80F}
