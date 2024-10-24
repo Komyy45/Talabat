@@ -27,8 +27,7 @@ namespace Linkdev.Talabat.APIs
                         return new BadRequestObjectResult(new ApiValidationErrorResponse(400)
                         {
                             Errors = actionContext.ModelState.Where(state => state.Value?.Errors.Count > 0)
-                                                                .Select(state => new { state.Key, Errors = state.Value.Errors.Select(error => error.ErrorMessage) })
-                                                                .ToDictionary(error => error.Key, error => error.Errors)
+                                                                .SelectMany(state => state.Value!.Errors.Select(error => error.ErrorMessage))
                         });
                     };
                 })
