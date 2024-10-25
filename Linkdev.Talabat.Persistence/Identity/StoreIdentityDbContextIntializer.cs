@@ -1,7 +1,9 @@
-﻿using Linkdev.Talabat.Core.Domain.Contracts.Persistence.Intializers;
+﻿using Castle.Core.Logging;
+using Linkdev.Talabat.Core.Domain.Contracts.Persistence.Intializers;
 using Linkdev.Talabat.Core.Domain.Entities.Identity;
 using Linkdev.Talabat.Persistence._Common;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Linkdev.Talabat.Persistence.Identity
 {
@@ -13,13 +15,14 @@ namespace Linkdev.Talabat.Persistence.Identity
             {
                 ApplicationUser user = new ApplicationUser()
                 {
-                    UserName = "Youssef Mohamed",
+                    UserName = "YoussefMohamed",
                     Email = "YoussefElkomy@gmail.com",
                     DisplayName = "Youssef_Elkomy",
                     PhoneNumber = "1157197362"
                 };
 
-                await userManager.CreateAsync(user, "1234");
+                var result = await userManager.CreateAsync(user, "P@ssword1");
+
             }
         }
     }

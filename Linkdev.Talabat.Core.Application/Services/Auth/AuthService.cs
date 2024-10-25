@@ -67,7 +67,7 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
             };
         }
 
-        public async Task<string> GetJwtTokenAsync(ApplicationUser applicationUser)
+        private async Task<string> GetJwtTokenAsync(ApplicationUser applicationUser)
         {
             var userClaims = await userManager.GetClaimsAsync(applicationUser);
             var roles = await userManager.GetRolesAsync(applicationUser);
@@ -80,7 +80,7 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
             }.Union(userClaims)
              .Union(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            var secretKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes("My-Secret-Key"));
+            var secretKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes("My-Secret-Key-Dummyyyyyyyyyyyyyyyyyyyyyyyy"));
             var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var jsonWebToken = new JwtSecurityToken(

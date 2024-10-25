@@ -12,7 +12,7 @@ namespace Linkdev.Talabat.APIs.Extensions
         {
             services.AddIdentity<ApplicationUser, IdentityRole>(identityOptions =>
             {
-                identityOptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz123456789*^&$#!";
+                // identityOptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz123456789*^&$#!";
                 identityOptions.User.RequireUniqueEmail = true;
                 
                 identityOptions.SignIn.RequireConfirmedAccount = true;
@@ -34,7 +34,7 @@ namespace Linkdev.Talabat.APIs.Extensions
                     .AddEntityFrameworkStores<StoreIdentityDbContext>();
 
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
-            services.AddScoped(typeof(Func<IAuthService>), serviceProvider => serviceProvider.GetRequiredService<IAuthService>());
+            services.AddScoped(typeof(Func<IAuthService>), serviceProvider => () => serviceProvider.GetRequiredService<IAuthService>());
 
             return services;
         }
