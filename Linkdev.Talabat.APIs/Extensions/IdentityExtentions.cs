@@ -1,4 +1,6 @@
-﻿using Linkdev.Talabat.Core.Domain.Entities.Identity;
+﻿using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
+using Linkdev.Talabat.Core.Application.Services.Auth;
+using Linkdev.Talabat.Core.Domain.Entities.Identity;
 using Linkdev.Talabat.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 
@@ -30,6 +32,9 @@ namespace Linkdev.Talabat.APIs.Extensions
                 identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
             })
                     .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+            services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            services.AddScoped(typeof(Func<IAuthService>), serviceProvider => serviceProvider.GetRequiredService<IAuthService>());
 
             return services;
         }

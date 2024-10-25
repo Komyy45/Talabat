@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Authentication;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Auth;
 using Linkdev.Talabat.Core.Application.Exceptions;
 using Linkdev.Talabat.Core.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Linkdev.Talabat.Core.Application.Services.Auth
 {
-    internal class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : IAuthService
+    public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : IAuthService
     {
         public async Task<UserDto> LoginAsync(LoginDto user)
         {
@@ -32,7 +40,7 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
                 Id = desiredUser.Id,
                 DisplayName = desiredUser.DisplayName,
                 Email = desiredUser.Email!,
-                Token = "Test"
+                Token = await GetJwtTokenAsync(desiredUser)
             };
         }
 
@@ -55,8 +63,38 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
                 Id = applicationUser.Id,
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "Test"
+                Token = await GetJwtTokenAsync(applicationUser),
             };
+        }
+
+        public async Task<string> GetJwtTokenAsync(ApplicationUser applicationUser)
+        {
+            var userClaims = await userManager.GetClaimsAsync(applicationUser);
+            var roles = await userManager.GetRolesAsync(applicationUser);
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.PrimarySid, applicationUser.Id),
+                new Claim(ClaimTypes.Email, applicationUser.Email!),
+                new Claim(ClaimTypes.GivenName, applicationUser.DisplayName)
+            }.Union(userClaims)
+             .Union(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+            var secretKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes("My-Secret-Key"));
+            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+            var jsonWebToken = new JwtSecurityToken(
+                issuer: "Talabat.Apis",
+                audience: "Talabat Users",
+                expires: DateTime.UtcNow.AddMinutes(10),
+                claims: claims,
+                signingCredentials: signingCredentials
+                );
+            {
+                
+            };
+
+            return new JwtSecurityTokenHandler().WriteToken(jsonWebToken);
         }
     }
 }
