@@ -1,15 +1,40 @@
-﻿using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
+﻿using System.Text;
+using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
+using Linkdev.Talabat.Core.Application.Abstraction.Models.Auth;
 using Linkdev.Talabat.Core.Application.Services.Auth;
 using Linkdev.Talabat.Core.Domain.Entities.Identity;
 using Linkdev.Talabat.Persistence.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Linkdev.Talabat.APIs.Extensions
 {
     public static class IdentityExtentions
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services)
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                bearerOptions.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    
+                    ClockSkew = TimeSpan.FromMinutes(0),
+                    ValidIssuer = configuration["JwtSettings:Issuer"],
+                    ValidAudience = configuration["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]!))
+                };
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>(identityOptions =>
             {
                 // identityOptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz123456789*^&$#!";

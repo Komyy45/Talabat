@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Authentication;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Auth;
 using Linkdev.Talabat.Core.Application.Exceptions;
 using Linkdev.Talabat.Core.Domain.Entities.Identity;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Linkdev.Talabat.Core.Application.Services.Auth
 {
-    public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : IAuthService
+    public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings) : IAuthService
     {
+        public JwtSettings _jwtSettings { get; set; } = jwtSettings.Value;
+
         public async Task<UserDto> LoginAsync(LoginDto user)
         {
             var desiredUser = await userManager.FindByEmailAsync(user.Email);
@@ -80,19 +74,16 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
             }.Union(userClaims)
              .Union(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-            var secretKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes("My-Secret-Key-Dummyyyyyyyyyyyyyyyyyyyyyyyy"));
+            var secretKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var jsonWebToken = new JwtSecurityToken(
-                issuer: "Talabat.Apis",
-                audience: "Talabat Users",
-                expires: DateTime.UtcNow.AddMinutes(10),
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
                 claims: claims,
                 signingCredentials: signingCredentials
                 );
-            {
-                
-            };
 
             return new JwtSecurityTokenHandler().WriteToken(jsonWebToken);
         }
