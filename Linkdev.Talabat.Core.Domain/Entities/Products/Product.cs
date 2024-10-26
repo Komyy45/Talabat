@@ -12,11 +12,11 @@
 
         public decimal Price { get; set; }
 
-        public int? BrandId { get; set; } // Foriegn Key ---> ProuctBrand Entity
+        public int? BrandId { get; set; }
 
         public virtual ProductBrand? Brand { get; set; }
 
-        public int? CategoryId { get; set; } // Foriegn Key ---> ProductCategory Entity
+        public int? CategoryId { get; set; }
 
         public virtual ProductCategory? Category { get; set; }
     }

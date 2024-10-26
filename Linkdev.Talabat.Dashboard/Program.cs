@@ -1,3 +1,9 @@
+using Linkdev.Talabat.APIs;
+using Linkdev.Talabat.APIs.Extensions;
+using Linkdev.Talabat.Core.Application;
+using Linkdev.Talabat.Infrastructure;
+using Linkdev.Talabat.Persistence;
+
 namespace Linkdev.Talabat.Dashboard
 {
     public class Program
@@ -7,11 +13,24 @@ namespace Linkdev.Talabat.Dashboard
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            #region Configure Services
+            
+            builder.Services.AddControllersWithViews(); 
+            builder.Services.AddDashboardServices();
+			builder.Services.AddPresentationServices();
+			builder.Services.AddApplicationServices();
+			builder.Services.AddInfrastructureServices(builder.Configuration);
+			builder.Services.AddPersistenceServices(builder.Configuration);
+            builder.Services.AddIdentityServices(builder.Configuration);
+            
 
-            var app = builder.Build();
+			#endregion
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            #region Configure Kestrel Middlewares
+            
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -24,11 +43,15 @@ namespace Linkdev.Talabat.Dashboard
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}"); 
+
+            #endregion
 
             app.Run();
         }

@@ -1,0 +1,56 @@
+﻿@using Linkdev.Talabat.Dashboard.Models.Auth
+@model IEnumerable<RoleViewModel>
+@{
+	ViewData["Title"] = "Roles";
+}
+
+<header class="content-head my-5">
+	<h1>User Roles</h1>
+
+
+	<form asp-controller="Roles" asp-action="Create" class="action d-flex gap-3">
+		<input type="text" name="name" class="form-control" placeholder="Role Name" />
+		<input type="submit" value="Add New Role" class="btn btn-info" />
+	</form>
+</header>
+
+@if (Model.Any())
+{
+	<table class="table table-dark table-hover table-striped text-center">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayName(nameof(RoleViewModel.Id))
+				</th>
+				<th>
+					@Html.DisplayName(nameof(RoleViewModel.Name))
+				</th>
+				<th>
+					Actions
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var Role in Model)
+			{
+				<tr>
+					<td>
+						@Role.Id
+					</td>
+					<td>
+						@Role.Name
+					</td>
+					<td>
+						<a asp-action="delete" asp-route-id="@Role.Id" class="btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<div class="alert alert-info">
+		There are no Roles!
+	</div>
+}

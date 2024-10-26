@@ -25,7 +25,7 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
 
             if(result.IsNotAllowed) throw new UnAuthorizedException("Account has not been confirmed Yet");
 
-            if(result.IsLockedOut) throw new UnAuthorizedException("This Account is Locked!");
+            //if(result.IsLockedOut) throw new UnAuthorizedException("This Account is Locked!");
 
             if(!result.Succeeded) throw new UnAuthorizedException("Invalid Login");
 

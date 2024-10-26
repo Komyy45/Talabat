@@ -21,6 +21,7 @@ namespace Linkdev.Talabat.APIs.Extensions
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(bearerOptions =>
             {
+
                 bearerOptions.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,

@@ -1,4 +1,5 @@
 ﻿using Linkdev.Talabat.Core.Domain.Contracts.Infrastructure;
+using Linkdev.Talabat.Infrastructure._AttachmentService;
 using Linkdev.Talabat.Infrastructure.BasketRepsitory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ namespace Linkdev.Talabat.Infrastructure
             services.AddSingleton<IConnectionMultiplexer>(serviceProvider => ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!));
 
             services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
+            services.AddScoped(typeof(IAttachmentService), typeof(AttachmentService));
 
             return services;
         }

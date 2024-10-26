@@ -1,0 +1,60 @@
+﻿@using Linkdev.Talabat.Core.Domain.Contracts.Persistence
+@using Linkdev.Talabat.Core.Domain.Entities.Products
+@model Linkdev.Talabat.Dashboard.Models.Products.ProductCreateEditViewModel
+
+@{
+    var categoryLookup = new SelectList(await unitOfWork.GetRepository<ProductCategory, int>().GetAllAsync(), nameof(ProductCategory.Id), nameof(ProductCategory.Name));
+    var brandLookup = new SelectList(await unitOfWork.GetRepository<ProductBrand, int>().GetAllAsync(), nameof(ProductBrand.Id), nameof(ProductBrand.Name));
+}
+@inject IUnitOfWork unitOfWork
+<h1>Edit</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrandId" class="control-label"></label>
+                <select asp-for="BrandId" asp-items="brandLookup" class="form-control">
+                    <option selected>Select an option</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" asp-items="categoryLookup" class="form-control">
+                    <option selected>Select an option</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Picture" class="control-label"></label>
+                <input asp-for="Picture" class="form-control" />
+                <span asp-validation-for="Picture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
