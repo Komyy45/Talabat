@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ProductBrandViewModel>
+@{
+	ViewData["Title"] = "Brands";
+}
+
+<header class="content-head my-5">
+	<h1>Product Brands</h1>
+
+
+	<form asp-controller="ProductBrands" asp-action="Create" class="action d-flex gap-3">
+		<input type="text" name="name" class="form-control" placeholder="Brand Name" />
+		<input type="submit" value="Add new brand" class="btn btn-info" />
+	</form>
+</header>
+
+@if(Model.Any())
+{
+	<table class="table table-dark table-hover table-striped text-center">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayName(nameof(ProductBrandViewModel.Id))
+				</th>
+				<th>
+					@Html.DisplayName(nameof(ProductBrandViewModel.Name))
+				</th>
+				<th>
+					Actions
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var brand in Model)
+			{
+				<tr>
+					<td>
+						@brand.Id
+					</td>	
+					<td>
+						@brand.Name
+					</td>					
+					<td>
+						<a asp-action="delete" asp-route-id="@brand.Id" class="btn btn-danger">Delete</a>
+					</td>					
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<div class="alert alert-info">
+		There are no Brands!
+	</div>
+}

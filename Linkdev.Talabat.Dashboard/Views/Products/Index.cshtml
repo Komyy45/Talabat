@@ -1,0 +1,81 @@
+﻿
+@model IEnumerable<ProductViewModel>
+@{
+	ViewData["Title"] = "Products";
+}
+
+
+
+
+
+
+<header class="content-head my-5">
+	<h1>Products</h1>
+
+	<div class="action">
+		<a asp-action="Create" class="btn btn-info">
+			Add new Product
+		</a>
+	</div>
+</header>
+
+@if(Model.Any())
+{
+	<table class="table table-dark table-hover table-striped text-center">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayName(nameof(ProductViewModel.Name))
+				</th>
+				<th>
+					@Html.DisplayName(nameof(ProductViewModel.Price))
+				</th>
+				<th>
+					@Html.DisplayName(nameof(ProductViewModel.Brand)))
+				</th>
+				<th>
+					@Html.DisplayName(nameof(ProductViewModel.Category))
+				</th>
+				<th>
+					Actions
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var product in Model)
+			{
+				<tr>
+					<td>
+						@product.Name
+					</td>					
+					<td>
+						@product.Price
+					</td>					
+					<td>
+						@product.Brand
+					</td>					
+					<td>
+						@product.Category
+					</td>					
+					<td class="d-flex">
+						<a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-info">
+							Edit
+						</a>
+						<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-outline-success">
+							Details
+						</a>
+						<a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger">
+							Delete
+						</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<div class="alert alert-info">
+		There are no products!
+	</div>
+}

@@ -1,0 +1,63 @@
+﻿@model RegisterDto
+@{
+    ViewData["Title"] = "SignIn";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<form action="/Account/Register" class="signin" method="post">
+
+    <div class="content">
+
+        <h2>Login</h2>
+
+        <div class="form">
+            <div style="color: red; width: 100%;" asp-validation-summary="All"></div>
+
+
+            <div class="inputBox" style="width:100%">
+                <input asp-for="UserName"> <i>UserName</i>
+                <span class="validation" asp-validation-for="UserName"></span>
+            </div>
+
+            <div class="inputBox" style="width:100%">
+                <input asp-for="DisplayName"> <i>Display Name</i>
+                <span class="validation" asp-validation-for="DisplayName"></span>
+            </div>
+
+            <div class="inputBox" style="width:100%">
+                <input asp-for="Email"> <i>Email Address</i>
+                <span class="validation" asp-validation-for="Email"></span>
+            </div>
+            <div class="inputBox" style="width:100%">
+                <input asp-for="PhoneNumber"> <i>PhoneNumber</i>
+                <span class="validation" asp-validation-for="PhoneNumber"></span>
+            </div>
+
+            <div class="inputBox" style="width:100%">
+
+                <input asp-for="Password" type="password"> <i>Password</i>
+                <span type="password" class="validation" asp-validation-for="Password"></span>
+            </div>
+
+
+            <div class="links">
+                <a href="#">I Don't have an account</a> <a asp-controller="Account" asp-action="Login">Login</a>
+            </div>
+
+            <div class="inputBox" style="width: 100%">
+                <input type="submit" value="Register">
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+

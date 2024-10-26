@@ -12,12 +12,14 @@ namespace Linkdev.Talabat.Persistence
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<StoreDbContext>(options =>
-            options
+
+            services.AddScoped<CustomSaveChangesInterceptor>();
+            services.AddDbContext<StoreDbContext>((Provider,options) =>
+            {
+                options
             .UseLazyLoadingProxies()
-            .UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
-            migrationOptions => migrationOptions.MigrationsAssembly(typeof(AssemblyInformation).Assembly.FullName)
-            ));
+            .UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            } );
 
             services.AddDbContext<StoreIdentityDbContext>(options =>
             options

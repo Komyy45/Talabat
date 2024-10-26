@@ -1,0 +1,49 @@
+﻿@model LoginDto
+@{
+    ViewData["Title"] = "SignIn";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<form action="/Account/Login" class="signin" method="post">
+
+    <div class="content">
+
+        <h2>Login</h2>
+
+        <div class="form">
+            <div style="color: red; width: 100%;" asp-validation-summary="All"></div>
+
+
+            <div class="inputBox" style="width:100%">
+                <input asp-for="Email"> <i>Email Address</i>
+                <span class="validation" asp-validation-for="Email"></span>
+            </div>
+
+            <div class="inputBox" style="width:100%">
+
+                <input asp-for="Password" type="password"> <i>Password</i>
+                <span type="password" class="validation" asp-validation-for="Password"></span>
+            </div>
+
+
+            <div class="links">
+                <a href="#">I Don't have an account</a> <a asp-action="Register">Register</a>
+            </div>
+
+            <div class="inputBox" style="width: 100%">
+                <input type="submit" value="Login">
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+
