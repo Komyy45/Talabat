@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Linkdev.Talabat.Persistence.Data.Interceptors
 {
-    internal class CustomSaveChangesInterceptor(StoreContext dbContext, ILoggedInUserService loggedInUserService) : SaveChangesInterceptor
+    internal class CustomSaveChangesInterceptor(StoreDbContext dbContext, ILoggedInUserService loggedInUserService) : SaveChangesInterceptor
     {
         public override int SavedChanges(SaveChangesCompletedEventData eventData, int result)
         {

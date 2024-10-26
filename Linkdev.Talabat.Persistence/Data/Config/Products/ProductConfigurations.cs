@@ -1,5 +1,8 @@
-﻿namespace Linkdev.Talabat.Persistence.Data.Config.Products
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+
+namespace Linkdev.Talabat.Persistence.Data.Config.Products
 {
+    [DbContext(typeof(StoreDbContext))]
     internal class ProductConfigurations : BaseAuditableEntityConfigurations<Product, int>
     {
         public override void Configure(EntityTypeBuilder<Product> builder)
