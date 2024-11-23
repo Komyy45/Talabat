@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Linkdev.Talabat.Core.Domain.Entities.Orders;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Linkdev.Talabat.Persistence.Data.Config.Orders
 {
+	[DbContext(typeof(StoreDbContext))]
 	internal class DeliveryMethodConfigurations : BaseEntityConfigurations<DeliveryMethod, int>
 	{
 		public override void Configure(EntityTypeBuilder<DeliveryMethod> builder)
