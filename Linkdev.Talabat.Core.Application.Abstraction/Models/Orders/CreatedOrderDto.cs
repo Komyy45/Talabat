@@ -9,7 +9,7 @@ namespace Linkdev.Talabat.Core.Application.Abstraction.Models.Orders
 {
 	public class CreatedOrderDto
 	{
-        public required int BasketId { get; set; }
+        public required string BasketId { get; set; }
 
         public int DeliveryMethodId { get; set; }
 

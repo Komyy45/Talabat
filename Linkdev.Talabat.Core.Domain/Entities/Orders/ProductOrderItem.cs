@@ -12,6 +12,6 @@ namespace Linkdev.Talabat.Core.Domain.Entities.Orders
 
         public required string ProductName { get; set; }
 
-        public required string PictureUrl { get; set; }
+        public string? PictureUrl { get; set; }
     }
 }

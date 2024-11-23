@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Linkdev.Talabat.Core.Application.Abstraction.Models._Common;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Basket;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Employees;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Orders;
@@ -58,6 +59,8 @@ namespace Linkdev.Talabat.Core.Application.Mapping
                 .ForMember(dist => dist.PictureUrl, o => o.MapFrom<OrderItemPictureUrlResolver>());
 
             CreateMap<DeliveryMethod, DeliveryMethodDto>();
+
+            CreateMap<Address, AddressDto>().ReverseMap();
                 
             #endregion
         }

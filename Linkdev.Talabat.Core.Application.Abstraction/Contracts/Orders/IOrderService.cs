@@ -9,7 +9,7 @@ using Linkdev.Talabat.Core.Application.Abstraction.Models.Orders;
 
 namespace Linkdev.Talabat.Core.Application.Abstraction.Contracts.Orders
 {
-	internal interface IOrderService
+	public interface IOrderService
 	{
 		Task<OrderToReturnDto> CreateOrderAsync(string buyerEmail, CreatedOrderDto createdOrder);
 
