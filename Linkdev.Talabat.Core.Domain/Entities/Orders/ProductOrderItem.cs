@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Linkdev.Talabat.Core.Domain.Entities.Orders
+{
+	public class ProductOrderItem
+	{
+        public required int ProductId { get; set; }
+
+        public required string ProductName { get; set; }
+
+        public required string PictureUrl { get; set; }
+    }
+}
