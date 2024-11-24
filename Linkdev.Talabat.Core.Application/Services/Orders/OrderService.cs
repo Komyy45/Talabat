@@ -24,40 +24,37 @@ namespace Linkdev.Talabat.Core.Application.Services.Orders
 				BuyerEmail = buyerEmail,
 				ShippingAddress = mapper.Map<Address>(createdOrder.Address),
 				DeliveryMethodId = createdOrder.DeliveryMethodId,
+				DeliveryMethod = await unitOfWork.GetRepository<DeliveryMethod, int>().GetAsync(createdOrder.DeliveryMethodId)
 			};
 
 			// 1. Get Basket
 			var basket = await basketRepo.GetAsync(createdOrder.BasketId);
 
-			var items = new List<OrderItem>();
-
 			// 2. Get Products Selected into the basket
-			order.Items = (ICollection<OrderItem>)basket!.Items.Select(
-				async item =>
+			foreach(var item in basket!.Items)
+			{
+				var product = await unitOfWork.GetRepository<Product, int>().GetAsync(item.Id);
+
+				if (product is null)
+					throw new NotFoundException("Product Not Found!", item.Id);
+
+				var createdOrderItem = new OrderItem()
 				{
-					var product = await unitOfWork.GetRepository<Product, int>().GetAsync(item.Id);
-
-					if (product is null)
-						throw new NotFoundException("Product Not Found!", item.Id);
-
-					var createdOrderItem = new OrderItem()
+					Product = new ProductOrderItem()
 					{
-						Product = new ProductOrderItem()
-						{
-							ProductId = item.Id,
-							ProductName = product.Name,
-							PictureUrl = product.PictureUrl,
-						},
-						Price = product.Price,
-						Quantity = item.Quantity,
-					};
+						ProductId = item.Id,
+						ProductName = product.Name,
+						PictureUrl = product.PictureUrl,
+					},
+					Price = product.Price,
+					Quantity = item.Quantity,
+				};
 
-					// 3. Calculate Subtotal
-					order.SubTotal += (product.Price * item.Quantity);
+				// 3. Calculate Subtotal
+				order.SubTotal += (product.Price * item.Quantity);
 
-					return createdOrderItem;
-				}
-			);
+				order.Items.Add(createdOrderItem);
+			}
 
 			// 4. Saving changes to the database
 			await unitOfWork.GetRepository<Order, int>().AddAsync(order);

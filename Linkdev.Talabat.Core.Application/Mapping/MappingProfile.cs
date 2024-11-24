@@ -55,8 +55,7 @@ namespace Linkdev.Talabat.Core.Application.Mapping
             
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(dist => dist.ProductId, o => o.MapFrom(src => src.Product.ProductId))
-                .ForMember(dist => dist.ProductName, o => o.MapFrom(src => src.Product.ProductName))
-                .ForMember(dist => dist.PictureUrl, o => o.MapFrom<OrderItemPictureUrlResolver>());
+                .ForMember(dist => dist.ProductName, o => o.MapFrom(src => src.Product.ProductName));
 
             CreateMap<DeliveryMethod, DeliveryMethodDto>();
 

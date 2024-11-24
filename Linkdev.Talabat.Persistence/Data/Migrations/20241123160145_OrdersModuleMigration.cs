@@ -68,7 +68,7 @@ namespace Linkdev.Talabat.Persistence.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Product_ProductId = table.Column<int>(type: "int", nullable: false),
                     Product_ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Product_PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Product_PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: true),

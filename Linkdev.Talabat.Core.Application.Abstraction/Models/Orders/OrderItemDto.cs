@@ -14,7 +14,7 @@ namespace Linkdev.Talabat.Core.Application.Abstraction.Models.Orders
 
 		public required string ProductName { get; set; }
 
-		public required string PictureUrl { get; set; }
+		public string? PictureUrl { get; set; }
 
         public decimal Price { get; set; }
 
