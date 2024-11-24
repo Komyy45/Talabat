@@ -12,6 +12,7 @@ using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Core.Domain.Entities.Orders;
 using Linkdev.Talabat.Core.Domain.Entities.Products;
 using Linkdev.Talabat.Core.Domain.Specifications.Orders;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Linkdev.Talabat.Core.Application.Services.Orders
 {
@@ -71,6 +72,8 @@ namespace Linkdev.Talabat.Core.Application.Services.Orders
 
 			OrderSpecifications spec = new OrderSpecifications(clientEmail, id);
 			var order = await unitOfWork.GetRepository<Order, int>().GetAsync(spec, id);
+
+			if (order is null) throw new NotFoundException(nameof(Order), id);
 
 			return mapper.Map<OrderToReturnDto>(order);
 		}
