@@ -15,6 +15,9 @@ using Linkdev.Talabat.Core.Domain.Entities.Employees;
 using Linkdev.Talabat.Core.Domain.Entities.Orders;
 using Linkdev.Talabat.Core.Domain.Entities.Products;
 
+using OrdersAddress = Linkdev.Talabat.Core.Domain.Entities.Orders.Address;
+using IdentityAddress = Linkdev.Talabat.Core.Domain.Entities.Identity.Address;
+
 namespace Linkdev.Talabat.Core.Application.Mapping
 {
     internal class MappingProfile : Profile
@@ -59,8 +62,14 @@ namespace Linkdev.Talabat.Core.Application.Mapping
 
             CreateMap<DeliveryMethod, DeliveryMethodDto>();
 
-            CreateMap<Address, AddressDto>().ReverseMap();
-                
+            CreateMap<OrdersAddress, AddressDto>().ReverseMap();
+
+            #endregion
+
+            #region Identity
+
+            CreateMap<IdentityAddress, AddressDto>().ReverseMap();   
+
             #endregion
         }
     }

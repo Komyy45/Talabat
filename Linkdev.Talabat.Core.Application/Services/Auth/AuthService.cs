@@ -3,8 +3,10 @@ using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
+using Linkdev.Talabat.Core.Application.Abstraction.Models._Common;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Auth;
 using Linkdev.Talabat.Core.Application.Exceptions;
+using Linkdev.Talabat.Core.Application.Extensions;
 using Linkdev.Talabat.Core.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -12,11 +14,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Linkdev.Talabat.Core.Application.Services.Auth
 {
-    public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings) : IAuthService
+	public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings, IMapper mapper) : IAuthService
     {
         public JwtSettings _jwtSettings { get; set; } = jwtSettings.Value;
 
-		public async Task<UserDto> GetCurrentUser(ClaimsPrincipal claims)
+		public async Task<UserDto> GetCurrentUserAsync(ClaimsPrincipal claims)
 		{
 		    var user = await userManager.FindByEmailAsync(claims.FindFirstValue(ClaimTypes.Email)!);
 
@@ -27,6 +29,31 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
 				Email = user.Email!,
                 Token = await GetJwtTokenAsync(user),
 			};
+		}
+
+		public async Task<AddressDto?> GetCurrentUserAddressAsync(ClaimsPrincipal claims)
+		{
+            var user = await userManager.GetCurrentUserIncludingAddressAsync(claims);
+
+            return mapper.Map<AddressDto>(user!.Address);
+        }
+
+		public async Task<AddressDto> UpdateUserAddressAsync(ClaimsPrincipal claims, AddressDto addressDto)
+		{
+            var user = await userManager.GetCurrentUserIncludingAddressAsync(claims);
+
+            var updatedAddress = mapper.Map<Address>(addressDto);
+
+            if (user!.Address is not null)
+                updatedAddress.Id = user.Address.Id;
+
+            user!.Address = updatedAddress;
+
+            var result = await userManager.UpdateAsync(user);
+
+            if (!result.Succeeded) throw new BadRequestException(string.Join(",", result.Errors.Select(E => E.Description)));
+
+            return addressDto;
 		}
 
 		public async Task<UserDto> LoginAsync(LoginDto user)
@@ -101,5 +128,10 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
 
             return new JwtSecurityTokenHandler().WriteToken(jsonWebToken);
         }
-    }
+
+		public async Task<bool> EmailExistsAsync(string email)
+		{
+		    return	await userManager.FindByEmailAsync(email) is not null;
+		}
+	}
 }
