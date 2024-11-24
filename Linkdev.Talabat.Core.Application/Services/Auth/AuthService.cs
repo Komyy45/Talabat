@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Auth;
 using Linkdev.Talabat.Core.Application.Exceptions;
@@ -15,7 +16,20 @@ namespace Linkdev.Talabat.Core.Application.Services.Auth
     {
         public JwtSettings _jwtSettings { get; set; } = jwtSettings.Value;
 
-        public async Task<UserDto> LoginAsync(LoginDto user)
+		public async Task<UserDto> GetCurrentUser(ClaimsPrincipal claims)
+		{
+		    var user = await userManager.FindByEmailAsync(claims.FindFirstValue(ClaimTypes.Email)!);
+
+			return new UserDto()
+			{
+				Id = user!.Id,
+				DisplayName = user.DisplayName,
+				Email = user.Email!,
+                Token = await GetJwtTokenAsync(user),
+			};
+		}
+
+		public async Task<UserDto> LoginAsync(LoginDto user)
         {
             var desiredUser = await userManager.FindByEmailAsync(user.Email);
 
