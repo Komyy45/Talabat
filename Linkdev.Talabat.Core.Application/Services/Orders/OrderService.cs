@@ -11,6 +11,7 @@ using Linkdev.Talabat.Core.Domain.Contracts.Infrastructure;
 using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Core.Domain.Entities.Orders;
 using Linkdev.Talabat.Core.Domain.Entities.Products;
+using Linkdev.Talabat.Core.Domain.Specifications.Orders;
 
 namespace Linkdev.Talabat.Core.Application.Services.Orders
 {
@@ -68,19 +69,26 @@ namespace Linkdev.Talabat.Core.Application.Services.Orders
 			return mapper.Map<OrderToReturnDto>(order);
 		}
 
-		public Task<IEnumerable<DeliveryMethodDto>> GetDeliveryMethodsAsync()
+		public async Task<OrderToReturnDto> GetOrderByIdAsync(string clientEmail, int id)
 		{
-			throw new NotImplementedException();
+
+			OrderSpecifications spec = new OrderSpecifications(clientEmail, id);
+			var order = await unitOfWork.GetRepository<Order, int>().GetAsync(spec, id);
+
+			return mapper.Map<OrderToReturnDto>(order);
 		}
 
-		public Task<OrderToReturnDto> GetOrderByIdAsync(string clientEmail, int id)
+		public async Task<IEnumerable<OrderToReturnDto>> GetUserOrdersAsync(string clientEmail)
 		{
-			throw new NotImplementedException();
+			OrderSpecifications spec = new OrderSpecifications(clientEmail);
+			var orders = await unitOfWork.GetRepository<Order, int>().GetAllAsync(spec);
+
+			return mapper.Map<IEnumerable<OrderToReturnDto>>(orders);
 		}
 
-		public Task<IEnumerable<OrderToReturnDto>> GetUserOrdersAsync()
+		public async Task<IEnumerable<DeliveryMethodDto>> GetDeliveryMethodsAsync()
 		{
-			throw new NotImplementedException();
+			return mapper.Map<IEnumerable<DeliveryMethodDto>>(await unitOfWork.GetRepository<DeliveryMethod, int>().GetAllAsync());
 		}
 	}
 }

@@ -1,18 +1,17 @@
-﻿using AutoMapper;
-using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
+﻿using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Basket;
+using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Orders;
 using Linkdev.Talabat.Core.Application.Mapping;
 using Linkdev.Talabat.Core.Application.Services;
 using Linkdev.Talabat.Core.Application.Services.Basket;
-using Linkdev.Talabat.Core.Domain.Contracts.Infrastructure;
+using Linkdev.Talabat.Core.Application.Services.Orders;
 using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Persistence.Repositories;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Linkdev.Talabat.Core.Application
 {
-    public static class DependencyInjection
+	public static class DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
@@ -21,14 +20,18 @@ namespace Linkdev.Talabat.Core.Application
 
             services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
 
+            services.AddScoped<IBasketService, BasketService>();
+
             services.AddScoped<Func<IBasketService>>(serviceProvider =>
             {
+                return () => serviceProvider.GetRequiredService<IBasketService>();
+            });
 
-                var basketRepo = serviceProvider.GetRequiredService<IBasketRepository>();
-                var mapper = serviceProvider.GetRequiredService<IMapper>();
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            services.AddScoped<IOrderService, OrderService>();
 
-                return () => new BasketService(basketRepo, mapper, configuration);
+            services.AddScoped<Func<IOrderService>>(serviceProvider =>
+            {
+                return () => serviceProvider.GetRequiredService<IOrderService>();
             });
 
             return services;

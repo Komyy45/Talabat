@@ -3,6 +3,7 @@ using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Basket;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Employees;
+using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Orders;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Products;
 using Linkdev.Talabat.Core.Application.Services.Employees;
 using Linkdev.Talabat.Core.Application.Services.Products;
@@ -18,14 +19,16 @@ namespace Linkdev.Talabat.Core.Application.Services
         private readonly Lazy<IEmployeeService> _employeeService;
         private readonly Lazy<IBasketService> _basketService;
         private readonly Lazy<IAuthService> _authService;
+        private readonly Lazy<IOrderService> _orderService;
 
 
         public IProductService ProductService => _productService.Value;
         public IEmployeeService EmployeeService => _employeeService.Value;
         public IBasketService BasketService => _basketService.Value;
         public IAuthService AuthService => _authService.Value;
+        public IOrderService OrderService => _orderService.Value;
 
-        public ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, Func<IBasketService> basketServiceFactory, Func<IAuthService> authServiceFactory)
+        public ServiceManager(IUnitOfWork unitOfWork, IMapper mapper,Func<IOrderService> orderServiceFactory, Func<IBasketService> basketServiceFactory, Func<IAuthService> authServiceFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -33,6 +36,8 @@ namespace Linkdev.Talabat.Core.Application.Services
             _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(this._unitOfWork, this._mapper));
             _basketService = new Lazy<IBasketService>(basketServiceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
             _authService = new Lazy<IAuthService>(authServiceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+            _orderService = new Lazy<IOrderService>(orderServiceFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+        
         }
 
     }
