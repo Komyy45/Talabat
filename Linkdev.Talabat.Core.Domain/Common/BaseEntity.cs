@@ -1,8 +1,10 @@
 ﻿namespace Linkdev.Talabat.Core.Domain.Common
 {
+    #nullable disable
+
     public abstract class BaseEntity<TKey> 
         where TKey : IEquatable<TKey>
     {
-        public required TKey Id { get; set; }
+        public TKey Id { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Linkdev.Talabat.Core.Domain.Contracts.Persistence.Intializers;
+﻿using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
+using Linkdev.Talabat.Core.Domain.Contracts.Persistence.Intializers;
 using Linkdev.Talabat.Persistence.Data;
 using Linkdev.Talabat.Persistence.Data.Interceptors;
 using Linkdev.Talabat.Persistence.Identity;
@@ -12,24 +13,36 @@ namespace Linkdev.Talabat.Persistence
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<StoreDbContext>(options =>
-            options
-            .UseLazyLoadingProxies()
-            .UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
-            migrationOptions => migrationOptions.MigrationsAssembly(typeof(AssemblyInformation).Assembly.FullName)
-            ));
+            #region StoreDbContext
 
+            services.AddScoped(typeof(AuditInterceptor));
+            
+            services.AddDbContext<StoreDbContext>((serviceProvider, options) =>
+            {
+                options
+                .UseLazyLoadingProxies()
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                migrationOptions => migrationOptions.MigrationsAssembly(typeof(AssemblyInformation).Assembly.FullName))
+                .AddInterceptors(serviceProvider.GetRequiredService<AuditInterceptor>());
+			}
+            );
+
+            #endregion
+
+            #region StoreIdentityDbContext
+            
             services.AddDbContext<StoreIdentityDbContext>(options =>
             options
             .UseLazyLoadingProxies()
-            .UseSqlServer(configuration.GetConnectionString("IdentityConnection"), 
+            .UseSqlServer(configuration.GetConnectionString("IdentityConnection"),
             migrationOptions => migrationOptions.MigrationsAssembly(typeof(AssemblyInformation).Assembly.FullName)
             ));
 
-            services.AddScoped<IStoreIdentityDbContextIntializer, StoreIdentityDbContextIntializer>();
-            services.AddScoped<IStoreDbContextInitializer, StoreDbContextInitializer>();
+            services.AddScoped<IStoreIdentityDbContextIntializer, StoreIdentityDbContextIntializer>(); 
 
-            services.AddScoped(typeof(ISaveChangesInterceptor), typeof(CustomSaveChangesInterceptor));
+            #endregion
+
+            services.AddScoped<IStoreDbContextInitializer, StoreDbContextInitializer>();
 
             return services;
         }

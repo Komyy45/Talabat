@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Linkdev.Talabat.Core.Domain.Contracts.Persistence.Intializers;
+using Linkdev.Talabat.Core.Domain.Entities.Orders;
 using Linkdev.Talabat.Persistence._Common;
 
 namespace Linkdev.Talabat.Persistence.Data
@@ -43,6 +44,19 @@ namespace Linkdev.Talabat.Persistence.Data
                 if (Products?.Count > 0)
                 {
                     await dbContext.AddRangeAsync(Products);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            if (!dbContext.DeliveryMethods.Any())
+            {
+
+                var data = File.ReadAllText("../Linkdev.Talabat.Persistence/Data/Seeds/delivery.json");
+                var deliveryMethods = JsonSerializer.Deserialize<List<DeliveryMethod>>(data);
+
+                if (deliveryMethods?.Count > 0)
+                {
+                    await dbContext.AddRangeAsync(deliveryMethods);
                     await dbContext.SaveChangesAsync();
                 }
             }
