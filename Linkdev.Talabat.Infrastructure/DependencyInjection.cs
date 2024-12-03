@@ -1,5 +1,7 @@
 ﻿using Linkdev.Talabat.Core.Domain.Contracts.Infrastructure;
+using Linkdev.Talabat.Core.Domain.Entities.Basket;
 using Linkdev.Talabat.Infrastructure.BasketRepsitory;
+using Linkdev.Talabat.Infrastructure.Payment;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
@@ -14,6 +16,10 @@ namespace Linkdev.Talabat.Infrastructure
             services.AddSingleton<IConnectionMultiplexer>(serviceProvider => ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!));
 
             services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
+
+            services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
+
+            services.Configure<RedisSettings>(options => options.timeToLiveInDays = int.Parse(configuration["RedisSettings:timeToLiveInDays"]!));
 
             return services;
         }

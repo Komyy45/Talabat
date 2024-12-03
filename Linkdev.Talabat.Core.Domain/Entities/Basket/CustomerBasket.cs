@@ -11,5 +11,10 @@ namespace Linkdev.Talabat.Core.Domain.Entities.Basket
         public required string Id { get; set; }
         
         public IEnumerable<BasketItem> Items { get; set; } = new List<BasketItem>();
+
+        public int? DeliveryMethodId { get; set; }
+        public string? PaymentIntentId { get; set; }
+        public decimal? ShippingPrice { get; set; }
+        public string? ClientSecret { get; set; }
     }
 }

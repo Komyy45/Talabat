@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -16,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Linkdev.Talabat.Core.Application.Services.Orders
 {
-	public class OrderService(IUnitOfWork unitOfWork, IBasketRepository basketRepo, IMapper mapper) : IOrderService
+	public class OrderService(IUnitOfWork unitOfWork, IBasketRepository basketRepo, IMapper mapper, IPaymentService paymentService) : IOrderService
 	{
 		public async Task<OrderToReturnDto> CreateOrderAsync(string buyerEmail, CreatedOrderDto createdOrder)
 		{
@@ -57,8 +58,20 @@ namespace Linkdev.Talabat.Core.Application.Services.Orders
 				order.Items.Add(createdOrderItem);
 			}
 
+			var ordersRepo = unitOfWork.GetRepository<Order, int>();
+
+			var customerBasket = await paymentService.CreateOrUpdatePaymentIntent(basket.Id);
+
+			order.PaymentIntentId = customerBasket.PaymentIntentId!;
+
+			OrderSpecifications ordersSpec = new OrderSpecifications(basket.PaymentIntentId!, false);
+			var orderWithSamePaymentIntent = await ordersRepo.GetAllAsync(ordersSpec);
+
+			if(orderWithSamePaymentIntent is not null)
+				ordersRepo.Delete(orderWithSamePaymentIntent.SingleOrDefault()!);
+
 			// 4. Saving changes to the database
-			await unitOfWork.GetRepository<Order, int>().AddAsync(order);
+			await ordersRepo.AddAsync(order);
 
 			var rows = await unitOfWork.CompleteAsync();
 
