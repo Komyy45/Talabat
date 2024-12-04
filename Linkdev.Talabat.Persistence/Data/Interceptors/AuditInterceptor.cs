@@ -30,11 +30,9 @@ namespace Linkdev.Talabat.Persistence.Data.Interceptors
 					entry.Entity.CreatedOn = entry.Entity.LastModifiedOn = DateTime.UtcNow;
 					entry.Entity.CreatedBy = entry.Entity.LastModifiedBy = loggedInUserService.UserId!;
 				}
-				else
-				{
-					entry.Entity.LastModifiedOn = DateTime.UtcNow;
-					entry.Entity.LastModifiedBy = loggedInUserService.UserId!;
-				}
+				entry.Entity.LastModifiedOn = DateTime.UtcNow;
+				entry.Entity.LastModifiedBy = loggedInUserService.UserId ?? "Stripe User";
+				
 			}
 		}
     }

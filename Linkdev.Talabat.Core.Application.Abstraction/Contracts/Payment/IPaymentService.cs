@@ -10,5 +10,7 @@ namespace Linkdev.Talabat.Core.Domain.Contracts.Infrastructure
 	public interface IPaymentService
 	{
 		public Task<CustomerBasketDto> CreateOrUpdatePaymentIntent(string basketId);
+
+		public Task UpdateOrderStatus(string requestBody, string header);
 	} 
 }

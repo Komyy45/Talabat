@@ -21,7 +21,11 @@ namespace Linkdev.Talabat.Infrastructure
             services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
 
             services.Configure<RedisSettings>(options => options.timeToLiveInDays = int.Parse(configuration["RedisSettings:timeToLiveInDays"]!));
-            services.Configure<StripeSettings>(options => options.SecretKey = configuration["StripeSettings:SecretKey"]!);
+            services.Configure<StripeSettings>(options =>
+            {
+                options.SecretKey = configuration["StripeSettings:SecretKey"]!;
+                options.WebHookSecret = configuration["StripeSettings:WebHookSecret"]!;
+             });
 
             return services;
         }

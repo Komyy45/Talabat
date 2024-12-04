@@ -3,14 +3,14 @@ import { IAddress } from "./address";
 export interface IOrderToCreate {
     basketId: string;
     deliveryMethodId: number;
-    shipToAddress: IAddress;
+    Address: IAddress;
 }
 
 export interface IOrder {
     id: number;
     buyerEmail: string;
     orderDate: string;
-    shipToAddress: IAddress;
+    Address: IAddress;
     deliveryMethod: string;
     deliveryCost: number;
     items: IOrderItem[];
@@ -18,7 +18,7 @@ export interface IOrder {
     status: string;
     total: number;
   }
-  
+
   export interface IOrderItem {
     productId: number;
     productName: string;

@@ -9,5 +9,6 @@ namespace Linkdev.Talabat.Infrastructure.Payment.options
 	public class StripeSettings
 	{
         public string SecretKey { get; set; }
+        public string WebHookSecret { get; set; }
     }
 }

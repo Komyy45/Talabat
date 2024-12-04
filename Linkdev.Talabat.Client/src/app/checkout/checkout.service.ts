@@ -14,6 +14,7 @@ export class CheckoutService {
   constructor(private http: HttpClient) { }
 
   createOrder(order: IOrderToCreate) {
+    debugger;
     return this.http.post(this.baseUrl + 'orders', order);
   }
 

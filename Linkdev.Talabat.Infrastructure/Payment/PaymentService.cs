@@ -5,14 +5,21 @@ using Linkdev.Talabat.Core.Domain.Contracts.Infrastructure;
 using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Core.Domain.Entities.Basket;
 using Linkdev.Talabat.Core.Domain.Entities.Orders;
+using Linkdev.Talabat.Core.Domain.Specifications.Orders;
 using Linkdev.Talabat.Infrastructure.Payment.options;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Stripe;
 using TalabatProduct = Linkdev.Talabat.Core.Domain.Entities.Products.Product;
 
 namespace Linkdev.Talabat.Infrastructure.Payment
 {
-	internal class PaymentService(IBasketRepository basketRepository, IUnitOfWork unitOfWork,IMapper mapper, IOptions<RedisSettings> redisSettings, IOptions<StripeSettings> stripeSettings) : IPaymentService
+	internal class PaymentService(IBasketRepository basketRepository, 
+		IUnitOfWork unitOfWork, 
+		IMapper mapper, 
+		IOptions<RedisSettings> redisSettings, 
+		IOptions<StripeSettings> stripeSettings,
+		ILogger<PaymentService> logger) : IPaymentService
 	{
 		private RedisSettings _redisSettings = redisSettings.Value;
 		private StripeSettings _stripeSettings = stripeSettings.Value;
@@ -78,6 +85,48 @@ namespace Linkdev.Talabat.Infrastructure.Payment
 			await basketRepository.UpdateAsync(basket, TimeSpan.FromDays(_redisSettings.timeToLiveInDays));
 
 			return mapper.Map<CustomerBasketDto>(basket);
+		}
+
+		public async Task UpdateOrderStatus(string requestBody, string header)
+		{
+			var stripeEvent =  EventUtility.ConstructEvent(requestBody, header, _stripeSettings.WebHookSecret);
+
+			var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
+			Order order = null!;
+			switch(stripeEvent.Type)
+			{
+				case "payment_intent.payment_failed":
+					order = await SetOrderStatus(paymentIntent!.Id, OrderStatus.PaymentFailed);
+					break;
+				case "payment_intent.succeeded":
+					order = await SetOrderStatus(paymentIntent!.Id, OrderStatus.PaymentReceived);
+					break;
+				default:
+					logger.LogError("Unhandled event type: {0}", stripeEvent.Type);
+					break;
+			}
+
+			await unitOfWork.CompleteAsync();
+
+			if (order is not null)
+				logger.LogInformation($"Order with Payment intent {stripeEvent.Id} Status is {order.Status}");
+		}
+
+		private async Task<Order> SetOrderStatus(string paymentIntent, OrderStatus orderStatus)
+		{
+			var ordersRepository = unitOfWork.GetRepository<Order, int>();
+
+			OrderSpecifications spec = new OrderSpecifications(paymentIntent, false);
+			var order = await ordersRepository.GetAllAsync(spec);
+
+			if (!order.Any()) throw new NotFoundException(nameof(Order), paymentIntent);
+
+			var o = order.SingleOrDefault();
+			o!.Status = orderStatus;
+
+			ordersRepository.Update(o);
+
+			return o;
 		}
 	}
 }
