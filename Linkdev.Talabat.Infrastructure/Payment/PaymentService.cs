@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Linkdev.Talabat.Core.Application.Abstraction.Models.Basket;
 using Linkdev.Talabat.Core.Application.Exceptions;
 using Linkdev.Talabat.Core.Domain.Contracts.Infrastructure;
 using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Core.Domain.Entities.Basket;
 using Linkdev.Talabat.Core.Domain.Entities.Orders;
-using TalabatProduct = Linkdev.Talabat.Core.Domain.Entities.Products.Product;
-using Stripe;
+using Linkdev.Talabat.Infrastructure.Payment.options;
 using Microsoft.Extensions.Options;
+using Stripe;
+using TalabatProduct = Linkdev.Talabat.Core.Domain.Entities.Products.Product;
 
 namespace Linkdev.Talabat.Infrastructure.Payment
 {
-	internal class PaymentService(IBasketRepository basketRepository, IUnitOfWork unitOfWork, IOptions<RedisSettings> redisSettings) : IPaymentService
+	internal class PaymentService(IBasketRepository basketRepository, IUnitOfWork unitOfWork,IMapper mapper, IOptions<RedisSettings> redisSettings, IOptions<StripeSettings> stripeSettings) : IPaymentService
 	{
 		private RedisSettings _redisSettings = redisSettings.Value;
+		private StripeSettings _stripeSettings = stripeSettings.Value;
 
-		public async Task<CustomerBasket> CreateOrUpdatePaymentIntent(string basketId)
+		public async Task<CustomerBasketDto> CreateOrUpdatePaymentIntent(string basketId)
 		{
+			StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
+
 			// 1. Get Customer basket 
 			var basket = await basketRepository.GetAsync(basketId);
 
@@ -56,13 +57,13 @@ namespace Linkdev.Talabat.Infrastructure.Payment
 				{
 					Amount = (long)basket.Items.Sum(p => p.Price * 100 * p.Quantity) + (long) (basket?.ShippingPrice ?? 0) * 100,
 					Currency = "USD",
-					PaymentMethodTypes = { "Card" }
+					PaymentMethodTypes = new() { "card" }
 				};
 
 				var createdPaymentIntent = await paymentIntentService.CreateAsync(paymentIntent);
 			
 				basket!.PaymentIntentId = createdPaymentIntent.Id;
-				basket!.PaymentIntentId = createdPaymentIntent.ClientSecret;
+				basket!.ClientSecret = createdPaymentIntent.ClientSecret;
 			}
 			else
 			{
@@ -76,7 +77,7 @@ namespace Linkdev.Talabat.Infrastructure.Payment
 
 			await basketRepository.UpdateAsync(basket, TimeSpan.FromDays(_redisSettings.timeToLiveInDays));
 
-			return basket;
+			return mapper.Map<CustomerBasketDto>(basket);
 		}
 	}
 }

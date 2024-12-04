@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Orders;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Orders;
 using Linkdev.Talabat.Core.Application.Exceptions;
@@ -13,7 +7,6 @@ using Linkdev.Talabat.Core.Domain.Contracts.Persistence;
 using Linkdev.Talabat.Core.Domain.Entities.Orders;
 using Linkdev.Talabat.Core.Domain.Entities.Products;
 using Linkdev.Talabat.Core.Domain.Specifications.Orders;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Linkdev.Talabat.Core.Application.Services.Orders
 {
@@ -60,15 +53,17 @@ namespace Linkdev.Talabat.Core.Application.Services.Orders
 
 			var ordersRepo = unitOfWork.GetRepository<Order, int>();
 
-			var customerBasket = await paymentService.CreateOrUpdatePaymentIntent(basket.Id);
-
-			order.PaymentIntentId = customerBasket.PaymentIntentId!;
+			order.PaymentIntentId = basket.PaymentIntentId!;
 
 			OrderSpecifications ordersSpec = new OrderSpecifications(basket.PaymentIntentId!, false);
 			var orderWithSamePaymentIntent = await ordersRepo.GetAllAsync(ordersSpec);
 
-			if(orderWithSamePaymentIntent is not null)
+			if(orderWithSamePaymentIntent.Any())
+			{
 				ordersRepo.Delete(orderWithSamePaymentIntent.SingleOrDefault()!);
+				var updatedCustomerBasket = await paymentService.CreateOrUpdatePaymentIntent(basket.Id);
+				order.PaymentIntentId = updatedCustomerBasket.PaymentIntentId!;
+			}
 
 			// 4. Saving changes to the database
 			await ordersRepo.AddAsync(order);

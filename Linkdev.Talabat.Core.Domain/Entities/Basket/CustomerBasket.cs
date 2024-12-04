@@ -14,7 +14,7 @@ namespace Linkdev.Talabat.Core.Domain.Entities.Basket
 
         public int? DeliveryMethodId { get; set; }
         public string? PaymentIntentId { get; set; }
-        public decimal? ShippingPrice { get; set; }
+        public decimal ShippingPrice { get; set; }
         public string? ClientSecret { get; set; }
     }
 }
