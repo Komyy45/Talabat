@@ -18,6 +18,11 @@ namespace Linkdev.Talabat.Core.Domain.Specifications.Orders
 
 			AddOrderByDesc(o => o.OrderDate);
 		}
+		
+        public OrderSpecifications(string paymentIntentId, bool isEmail): base()
+        {
+            Criteria = O => O.PaymentIntentId == paymentIntentId;
+		}
 
         public OrderSpecifications(string clientEmail, int orderId) : base()
         {

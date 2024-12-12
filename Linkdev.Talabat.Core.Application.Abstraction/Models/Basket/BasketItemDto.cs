@@ -13,7 +13,7 @@ namespace Linkdev.Talabat.Core.Application.Abstraction.Models.Basket
         public int Id { get; set; }
 
         [Required]
-        public required string Name { get; set; }
+        public required string ProductName { get; set; }
 
         [Range(.1, double.MaxValue, ErrorMessage = "Invalid Product Price")]
         [Required]

@@ -32,7 +32,7 @@ namespace Linkdev.Talabat.Persistence.Repositories
         public async Task<TEntity?> GetAsync(int id)
         {
             if(typeof(TEntity) == typeof(Product))
-                return await context.Set<Product>().Include(p => p.Brand).Include(p => p.Category).AsNoTracking().FirstOrDefaultAsync() as TEntity;
+                return await context.Set<Product>().Include(p => p.Brand).Include(p => p.Category).AsNoTracking().FirstOrDefaultAsync(product => product.Id == id) as TEntity;
 
             return await context.Set<TEntity>().FindAsync(id);
         }
