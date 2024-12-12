@@ -22,10 +22,10 @@ namespace Linkdev.Talabat.Core.Application
 
             services.AddScoped<IBasketService, BasketService>();
 
-            services.AddScoped<Func<IBasketService>>(serviceProvider =>
-            {
-                return () => serviceProvider.GetRequiredService<IBasketService>();
-            });
+            //services.AddScoped<Func<IBasketService>>(serviceProvider =>
+            //{
+            //    return () => serviceProvider.GetRequiredService<IBasketService>();
+            //});
 
             services.AddScoped<IOrderService, OrderService>();
 

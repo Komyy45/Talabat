@@ -9,7 +9,6 @@ namespace Linkdev.Talabat.Core.Application.Abstraction.Contracts
     public interface IServiceManager
     {
         public IProductService ProductService { get; }
-        public IBasketService BasketService { get; }
         public IEmployeeService EmployeeService { get; }
         public IAuthService AuthService { get; }
         public IOrderService OrderService { get; }
