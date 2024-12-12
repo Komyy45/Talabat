@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Auth;
-using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Basket;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Employees;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Orders;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Products;

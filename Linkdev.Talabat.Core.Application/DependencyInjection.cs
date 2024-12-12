@@ -1,5 +1,5 @@
 ﻿using Linkdev.Talabat.Core.Application.Abstraction.Contracts;
-using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Basket;
+using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Infrastructure.Basket;
 using Linkdev.Talabat.Core.Application.Abstraction.Contracts.Orders;
 using Linkdev.Talabat.Core.Application.Mapping;
 using Linkdev.Talabat.Core.Application.Services;

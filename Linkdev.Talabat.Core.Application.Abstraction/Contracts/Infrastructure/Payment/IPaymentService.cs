@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Linkdev.Talabat.Core.Application.Abstraction.Models.Basket;
 
-namespace Linkdev.Talabat.Core.Domain.Contracts.Infrastructure
+namespace Linkdev.Talabat.Core.Application.Abstraction.Contracts.Infrastructure.Payment
 {
 	public interface IPaymentService
 	{
 		public Task<CustomerBasketDto> CreateOrUpdatePaymentIntent(string basketId);
 
 		public Task UpdateOrderStatus(string requestBody, string header);
-	} 
+	}
 }
